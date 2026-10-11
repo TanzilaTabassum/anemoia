@@ -1,0 +1,10 @@
+{%- comment -%} "7 min read". Uses front matter reading_time if present, otherwise counts words. Param: item {%- endcomment -%}
+{%- assign rt_it = include.item | default: page -%}
+{%- if rt_it.reading_time -%}
+  {%- assign rt_min = rt_it.reading_time -%}
+{%- else -%}
+  {%- assign rt_words = rt_it.content | number_of_words -%}
+  {%- comment -%} times 1.0 forces a decimal division, then ceil rounds up to whole minutes {%- endcomment -%}
+  {%- assign rt_min = rt_words | times: 1.0 | divided_by: site.words_per_minute | ceil -%}
+{%- endif -%}
+{{- rt_min }} min read

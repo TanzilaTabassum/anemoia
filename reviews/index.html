@@ -1,0 +1,20 @@
+---
+layout: default
+title: Reviews
+styles: [writing]
+section: reviews
+description: Films and books, and what they did to me.
+---
+<div class="wrap wrap--narrow sec-reviews">
+  <header class="pub-head">
+    <p class="eyebrow">The writing desk</p>
+    <h1>Reviews</h1>
+    <p>Films and books, and what they did to me.</p>
+    <nav class="pub-tabs" aria-label="Writing sections">
+      <a href="{{ '/writing/' | relative_url }}">All</a>
+      <a href="{{ '/articles/' | relative_url }}">Articles</a>
+      <a href="{{ '/reviews/' | relative_url }}" aria-current="page">Reviews</a>
+    </nav>
+  </header>
+  {% include writing-index.html group="reviews" %}
+</div>

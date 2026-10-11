@@ -1,0 +1,31 @@
+{%- comment -%}
+  The universal card used on the homepage, in related blocks and anywhere a piece is previewed.
+  Params: item, size (lg | md | sm), sizes (img sizes attribute, optional)
+{%- endcomment -%}
+{%- assign cd_it = include.item -%}
+{%- assign cd_size = include.size | default: "md" -%}
+{%- capture cd_group %}{% include item-group.html item=cd_it %}{% endcapture -%}
+{%- assign cd_group = cd_group | strip -%}
+{%- capture cd_label %}{% include item-label.html item=cd_it %}{% endcapture -%}
+{%- assign cd_label = cd_label | strip -%}
+{%- capture cd_meta %}{% include item-meta.html item=cd_it %}{% endcapture -%}
+{%- assign cd_meta = cd_meta | strip -%}
+{%- include cover.html item=cd_it -%}
+{%- assign cd_cf = cover_file -%}
+{%- assign cd_ca = cover_alt -%}
+{%- assign cd_desc = cd_it.description | default: cd_it.subtitle -%}
+<article class="card card--{{ cd_size }} sec-{{ cd_group }}{% unless cd_cf %} card--text{% endunless %}">
+  <a class="card__link" href="{{ cd_it.url | relative_url }}">
+    {%- if cd_cf %}
+    <div class="card__media">{% include img.html file=cd_cf item=cd_it alt=cd_ca sizes=include.sizes %}</div>
+    {%- endif %}
+    <div class="card__body">
+      <span class="sticker">{{ cd_label }}</span>
+      <h3 class="card__title">{{ cd_it.title }}</h3>
+      {%- if cd_size != "sm" and cd_desc %}
+      <p class="card__desc">{{ cd_desc | strip_html | truncate: 150 }}</p>
+      {%- endif %}
+      <p class="card__meta">{{ cd_meta }}</p>
+    </div>
+  </a>
+</article>

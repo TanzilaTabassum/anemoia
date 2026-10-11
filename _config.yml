@@ -1,0 +1,86 @@
+# ─────────────────────────────────────────────────────────────
+#  ANEMOIA — site configuration
+#  Edit the "Your details" block first. Everything else is
+#  safe to leave alone until you want to change behaviour.
+# ─────────────────────────────────────────────────────────────
+
+# ── Your details ─────────────────────────────────────────────
+title: ANEMOIA
+tagline: nostalgia for a time you never knew
+description: A personal corner of the internet — art, photographs, writing and small ridiculous quests.
+author: Ahona
+lang: en
+timezone: Asia/Dhaka
+
+# Where the site lives.
+#   User/organisation site  (username.github.io):  url: "https://username.github.io"   baseurl: ""
+#   Project site (username.github.io/anemoia):     url: "https://username.github.io"   baseurl: "/anemoia"
+#   Custom domain:                                  url: "https://yourdomain.com"       baseurl: ""
+url: "https://TanzilaTabassum.github.io"
+baseurl: ""
+
+# ── Content collections ──────────────────────────────────────
+# Each folder starting with "_" below is one kind of content.
+# Permalinks use the file name, so  _art/untitled-no-04.md  →  /art/untitled-no-04/
+collections:
+  art:
+    output: true
+    permalink: /art/:name/
+  photography:
+    output: true
+    permalink: /photography/:name/
+  writing:
+    output: true
+    permalink: /writing/:name/
+  sidequests:
+    output: true
+    permalink: /sidequests/:name/
+
+# Layout + stylesheets are applied automatically per collection,
+# so content files only need their own metadata.
+defaults:
+  - scope: { path: "", type: art }
+    values: { layout: art, section: art, styles: [art] }
+  - scope: { path: "", type: photography }
+    values: { layout: photography, section: photography, styles: [photography] }
+  - scope: { path: "", type: writing }
+    values: { layout: writing, section: writing, styles: [writing] }
+  - scope: { path: "", type: sidequests }
+    values: { layout: sidequest, section: sidequests, styles: [sidequests], scripts: [sidequest] }
+
+# ── Display settings ─────────────────────────────────────────
+date_long: "%-d %B %Y"     # 6 October 2026
+date_month: "%B %Y"        # October 2026
+date_short: "%b %Y"        # Oct 2026
+words_per_minute: 220      # used to estimate reading time
+featured_limit: 6          # how many featured pieces show on the homepage
+latest_limit: 8            # how many recent pieces show on the homepage
+related_limit: 3           # items per related-content block
+related_min_shared: 1      # shared tags needed for "You may also like"
+
+# ── Images ───────────────────────────────────────────────────
+# Set responsive_images to true AFTER running tools/make-sizes.py,
+# which creates photo-480.jpg / photo-960.jpg / photo-1600.jpg next to each original.
+responsive_images: false
+image_sizes: [480, 960, 1600]
+
+# ── Build ────────────────────────────────────────────────────
+markdown: kramdown
+kramdown:
+  input: GFM
+  hard_wrap: false
+  auto_ids: true
+  footnote_nr: 1
+
+plugins:
+  - jekyll-sitemap
+
+exclude:
+  - README.md
+  - Gemfile
+  - Gemfile.lock
+  - tools
+  - vendor
+  - node_modules
+  - .jekyll-cache
+  - .sass-cache

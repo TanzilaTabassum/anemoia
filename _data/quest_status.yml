@@ -1,0 +1,6 @@
+# Side Quest statuses. Use the key in front matter:  status: in-progress
+in-progress: In progress
+completed: Quest complete
+failed: Failed (gloriously)
+abandoned: Abandoned
+paused: Paused

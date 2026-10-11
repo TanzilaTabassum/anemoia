@@ -1,0 +1,10 @@
+{%- comment -%}
+  Which "door" an item belongs to: art | photography | sidequests | articles | reviews
+  (writing is split into articles / reviews by _data/writing_types.yml)
+{%- endcomment -%}
+{%- assign ig_g = include.item.collection -%}
+{%- if ig_g == "writing" -%}
+  {%- assign ig_wt = site.data.writing_types | where: "key", include.item.type | first -%}
+  {%- assign ig_g = ig_wt.group | default: "articles" -%}
+{%- endif -%}
+{{- ig_g -}}

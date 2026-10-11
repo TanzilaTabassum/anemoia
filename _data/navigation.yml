@@ -1,0 +1,12 @@
+# Primary navigation. Order here = order on the site.
+primary:
+  - label: Home
+    url: /
+  - label: About
+    url: /about/
+  - label: Contact
+    url: /contact/
+  - label: Archive
+    url: /archive/
+  - label: Search
+    url: /search/

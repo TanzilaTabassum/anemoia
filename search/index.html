@@ -1,0 +1,57 @@
+---
+layout: default
+title: Search
+styles: [archive]
+scripts: [search]
+description: Search and filter everything on Anemoia by word, type, month and tag.
+---
+<div class="wrap wrap--narrow">
+  <header class="cat-head">
+    <p class="eyebrow">Find something</p>
+    <h1>Search</h1>
+    <p>Type a word, or narrow things down by type, month and tag. Filters combine.</p>
+  </header>
+
+  <form class="finder" id="finder" role="search" data-index="{{ '/search.json' | relative_url }}" data-archive="{{ '/archive/' | relative_url }}">
+    <div class="finder__q">
+      {% include icon.html name="search" %}
+      <label class="visually-hidden" for="q">Search</label>
+      <input id="q" type="search" name="q" placeholder="Search titles, words, tags…" autocomplete="off">
+    </div>
+    <div class="finder__filters">
+      <div>
+        <label for="f-type">Type</label>
+        <select id="f-type" name="type">
+          <option value="">All</option>
+          {%- for s in site.data.sections %}
+          <option value="{{ s.id }}">{{ s.label }}</option>
+          {%- endfor %}
+          <option value="writing">All writing</option>
+          <optgroup label="Writing sections">
+            {%- for t in site.data.writing_types %}
+            <option value="{{ t.key }}">{{ t.section }}</option>
+            {%- endfor %}
+          </optgroup>
+        </select>
+      </div>
+      <div>
+        <label for="f-month">Month</label>
+        <select id="f-month" name="month"><option value="">Any time</option></select>
+      </div>
+      <div>
+        <label for="f-tag">Tag</label>
+        <select id="f-tag" name="tag"><option value="">Any tag</option></select>
+      </div>
+    </div>
+    <div class="finder__bar">
+      <p class="finder__count" id="finder-count" aria-live="polite">Loading…</p>
+      <button type="button" class="finder__clear" hidden>Clear filters</button>
+    </div>
+  </form>
+
+  <div class="results" id="results" aria-live="polite"></div>
+
+  <noscript>
+    <p class="noscript-note">Search needs JavaScript. You can still browse everything in the <a href="{{ '/archive/' | relative_url }}">Archive</a>, which works without it.</p>
+  </noscript>
+</div>

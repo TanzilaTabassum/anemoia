@@ -1,0 +1,15 @@
+{%- comment -%}
+  A small "see also" card linking to another piece, for use on its own line in Markdown.
+    {% include ref.html to="_photography/rainy-days.md" %}
+  Params: to (file path), note (optional line of text shown above the title)
+{%- endcomment -%}
+{%- assign rf_hit = nil -%}
+{%- for d in site.documents -%}{%- if d.relative_path == include.to -%}{%- assign rf_hit = d -%}{%- break -%}{%- endif -%}{%- endfor -%}
+{%- if rf_hit -%}
+{%- capture rf_group %}{% include item-group.html item=rf_hit %}{% endcapture -%}
+{%- capture rf_label %}{% include item-label.html item=rf_hit %}{% endcapture -%}
+{%- capture rf_meta %}{% include item-meta.html item=rf_hit %}{% endcapture -%}
+<a class="ref sec-{{ rf_group | strip }}" href="{{ rf_hit.url | relative_url }}"><span class="ref__label">{{ include.note | default: rf_label | strip }}</span><span class="ref__title">{{ rf_hit.title }}</span><span class="ref__meta">{{ rf_meta | strip }}</span></a>
+{%- else -%}
+<!-- ref.html: no file found at {{ include.to }} -->
+{%- endif -%}

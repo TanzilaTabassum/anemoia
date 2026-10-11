@@ -1,0 +1,106 @@
+{%- comment -%}
+  Related content for the current page. Up to three blocks, each shown ONLY if it has something genuinely to show:
+
+    RELATED                  hand-picked, from  related:  in the page's front matter
+    You may also like        automatic — other pieces (any category) that share tags with this one
+    More from this subject   automatic — other pieces tagged with this page's main subject
+                             (its first tag, or  subject:  in front matter)
+
+  Nothing is forced: no shared tags, no block.
+{%- endcomment -%}
+{%- include all-content.html -%}
+{%- assign rc_min = site.related_min_shared | default: 1 -%}
+{%- assign rc_max = site.related_limit | default: 3 -%}
+{%- assign rc_subject = page.subject | default: page.tags.first -%}
+{%- assign rc_used = "|" -%}
+{%- assign rc_manual = "" -%}
+{%- assign rc_keys = "" -%}
+
+{%- comment -%} Pass 1: hand-picked links, and score everything else by shared tags {%- endcomment -%}
+{%- for d in all_content -%}
+  {%- if d.url == page.url -%}{%- continue -%}{%- endif -%}
+  {%- assign rc_i = forloop.index0 -%}
+  {%- if page.related contains d.relative_path or page.related contains d.url -%}
+    {%- assign rc_manual = rc_manual | append: rc_i | append: "," -%}
+    {%- assign rc_used = rc_used | append: rc_i | append: "|" -%}
+  {%- else -%}
+    {%- assign rc_score = 0 -%}
+    {%- for t in d.tags -%}{%- if page.tags contains t -%}{%- assign rc_score = rc_score | plus: 1 -%}{%- endif -%}{%- endfor -%}
+    {%- if rc_score >= rc_min -%}
+      {%- assign rc_dkey = d.date | date: "%Y%m%d" -%}
+      {%- assign rc_key = rc_score | plus: 100 | append: "-" | append: rc_dkey | append: "-" | append: rc_i -%}
+      {%- assign rc_keys = rc_keys | append: rc_key | append: "," -%}
+    {%- endif -%}
+  {%- endif -%}
+{%- endfor -%}
+
+{%- comment -%} Pass 2: best automatic matches (most shared tags first, then newest) {%- endcomment -%}
+{%- assign rc_auto = "" -%}
+{%- assign rc_sorted = rc_keys | split: "," | sort | reverse -%}
+{%- for k in rc_sorted limit: rc_max -%}
+  {%- assign rc_idx = k | split: "-" | last -%}
+  {%- assign rc_auto = rc_auto | append: rc_idx | append: "," -%}
+  {%- assign rc_used = rc_used | append: rc_idx | append: "|" -%}
+{%- endfor -%}
+
+{%- comment -%} Pass 3: more from the main subject (skipping anything already shown) {%- endcomment -%}
+{%- assign rc_subj = "" -%}
+{%- assign rc_subj_n = 0 -%}
+{%- if rc_subject -%}
+  {%- for d in all_content -%}
+    {%- if rc_subj_n >= rc_max -%}{%- break -%}{%- endif -%}
+    {%- if d.url == page.url -%}{%- continue -%}{%- endif -%}
+    {%- assign rc_i = forloop.index0 -%}
+    {%- assign rc_probe = "|" | append: rc_i | append: "|" -%}
+    {%- if d.tags contains rc_subject and rc_used contains rc_probe -%}{%- continue -%}{%- endif -%}
+    {%- if d.tags contains rc_subject -%}
+      {%- assign rc_subj = rc_subj | append: rc_i | append: "," -%}
+      {%- assign rc_subj_n = rc_subj_n | plus: 1 -%}
+    {%- endif -%}
+  {%- endfor -%}
+{%- endif -%}
+
+{%- assign rc_manual_list = rc_manual | split: "," -%}
+{%- assign rc_auto_list = rc_auto | split: "," -%}
+{%- assign rc_subj_list = rc_subj | split: "," -%}
+
+{%- if rc_manual_list.size > 0 or rc_auto_list.size > 0 or rc_subj_list.size > 0 %}
+<aside class="related wrap" aria-label="Related content">
+  {%- if rc_manual_list.size > 0 %}
+  <section class="related__block">
+    <h2 class="related__title">Related</h2>
+    <div class="related__grid">
+      {%- for i in rc_manual_list -%}
+        {%- assign rc_n = i | plus: 0 -%}
+        {%- assign rc_it = all_content[rc_n] -%}
+        {% include card.html item=rc_it size="sm" %}
+      {%- endfor %}
+    </div>
+  </section>
+  {%- endif %}
+  {%- if rc_auto_list.size > 0 %}
+  <section class="related__block">
+    <h2 class="related__title">You may also like</h2>
+    <div class="related__grid">
+      {%- for i in rc_auto_list -%}
+        {%- assign rc_n = i | plus: 0 -%}
+        {%- assign rc_it = all_content[rc_n] -%}
+        {% include card.html item=rc_it size="sm" %}
+      {%- endfor %}
+    </div>
+  </section>
+  {%- endif %}
+  {%- if rc_subj_list.size > 0 %}
+  <section class="related__block">
+    <h2 class="related__title">More from <a href="{{ '/search/' | relative_url }}?tag={{ rc_subject | url_encode }}">#{{ rc_subject | replace: '-', ' ' }}</a></h2>
+    <div class="related__grid">
+      {%- for i in rc_subj_list -%}
+        {%- assign rc_n = i | plus: 0 -%}
+        {%- assign rc_it = all_content[rc_n] -%}
+        {% include card.html item=rc_it size="sm" %}
+      {%- endfor %}
+    </div>
+  </section>
+  {%- endif %}
+</aside>
+{%- endif -%}

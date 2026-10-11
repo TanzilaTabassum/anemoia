@@ -1,0 +1,13 @@
+# Footer + contact links. Replace the placeholder URLs with your real ones.
+- label: Substack
+  url: https://example.substack.com
+  note: long-form writing
+- label: Pinterest
+  url: https://www.pinterest.com/example/
+  note: boards & references
+- label: YouTube
+  url: https://www.youtube.com/@example
+  note: side quests in video form
+- label: Email
+  url: mailto:hello@example.com
+  note: say hello

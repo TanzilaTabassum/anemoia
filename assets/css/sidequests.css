@@ -1,0 +1,73 @@
+/* SIDE QUESTS — field journal + visual diary + written vlog. Paper, tape, doodles. */
+.journal-head { padding-block: var(--s-8) var(--s-6); }
+.journal-head h1 { margin-top: var(--s-2); }
+.journal-head p { margin-top: var(--s-3); max-width: 34rem; font: 400 1.3rem/1.5 var(--f-read); color: var(--ink-soft); }
+
+.log { display: grid; gap: var(--s-6); grid-template-columns: repeat(auto-fill, minmax(19rem, 1fr)); padding-bottom: var(--s-8); }
+.logentry { position: relative; display: flex; flex-direction: column; text-decoration: none; background: #fffdf5; border: var(--bw) solid var(--ink); border-radius: 4px; box-shadow: var(--shadow); padding: .7rem .7rem 1.2rem; transition: transform .15s, box-shadow .15s; }
+.logentry:nth-child(odd) { transform: rotate(-.6deg); }
+.logentry:nth-child(even) { transform: rotate(.5deg); }
+.logentry:hover { background: #fffdf5; transform: rotate(0) translateY(-4px); box-shadow: var(--shadow-lg); }
+.logentry::before { content: ""; position: absolute; top: -.7rem; left: 50%; width: 4.6rem; height: 1.4rem; transform: translateX(-50%) rotate(-2deg); background: rgba(255, 216, 77, .8); border: 1px solid rgba(29,27,46,.2); z-index: 1; }
+.logentry__img { aspect-ratio: 4 / 3; border: 1.5px solid var(--ink); background: var(--mint-t); overflow: hidden; }
+.logentry__img img { width: 100%; height: 100%; object-fit: cover; }
+.logentry__no { margin-top: var(--s-4); font: 400 .78rem var(--f-pixel); letter-spacing: .1em; color: var(--ink-soft); }
+.logentry__no::before { content: "QUEST #" attr(data-no); }
+.logentry__title { margin-top: .2rem; font-size: 1.45rem; }
+.logentry__dates { margin-top: .3rem; font: 400 .78rem var(--f-mono); color: var(--ink-soft); }
+.logentry__desc { margin-top: var(--s-2); font: 400 1rem/1.5 var(--f-read); }
+.logentry .status { margin-top: var(--s-3); align-self: flex-start; }
+
+.status { display: inline-block; padding: .15rem .55rem; font: 500 .7rem/1.4 var(--f-mono); letter-spacing: .06em; text-transform: uppercase; background: #fff; border: 1.5px solid var(--ink); border-radius: 999px; }
+.status--completed { background: var(--mint); }
+.status--in-progress { background: var(--sky); }
+.status--failed { background: var(--tomato); }
+.status--paused, .status--abandoned { background: var(--lemon); }
+
+/* quest page */
+.quest__banner { border-bottom: var(--bw) solid var(--ink); background: var(--mint-t); position: relative; }
+.quest__cover { max-height: 52vh; overflow: hidden; border-bottom: var(--bw) solid var(--ink); }
+.quest__cover img { width: 100%; height: 52vh; object-fit: cover; }
+.quest__titlecard { position: relative; max-width: 46rem; margin-block: -3.5rem var(--s-6); padding: var(--s-5) var(--s-6); background: #fffdf5; border: var(--bw) solid var(--ink); box-shadow: var(--shadow-lg); border-radius: 4px; transform: rotate(-.5deg); }
+.quest__banner:not(:has(.quest__cover)) .quest__titlecard { margin-top: var(--s-7); }
+.quest__badges { margin-top: var(--s-3); display: flex; gap: var(--s-2); flex-wrap: wrap; }
+.quest__title { margin-top: var(--s-3); font-size: clamp(2.2rem, 6vw, 3.8rem); }
+.quest__dates { margin-top: var(--s-3); font: 500 .85rem var(--f-mono); letter-spacing: .06em; text-transform: uppercase; }
+.quest__dek { margin-top: var(--s-3); font: italic 400 1.3rem/1.45 var(--f-read); color: #3a3752; }
+
+.quest__layout { display: grid; grid-template-columns: 15rem minmax(0, 1fr); gap: var(--s-7); padding-top: var(--s-7); max-width: 1000px; }
+.quest__side { position: sticky; top: 8rem; align-self: start; display: grid; gap: var(--s-5); }
+.questlog { padding: var(--s-4); background: #fff; border: var(--bw) solid var(--ink); border-radius: var(--r-md); box-shadow: var(--shadow-sm); }
+.questlog__title { font: 400 .85rem var(--f-pixel); letter-spacing: .08em; text-transform: uppercase; margin-bottom: var(--s-3); }
+.questlog dl > div { padding-block: .45rem; border-bottom: 1px dashed #b9b3cf; }
+.questlog dt { font: 500 .66rem var(--f-mono); letter-spacing: .1em; text-transform: uppercase; color: var(--ink-soft); }
+.questlog dd { font: 600 .95rem/1.35 var(--f-display); }
+.chapters__title { font: 400 .8rem var(--f-pixel); letter-spacing: .08em; text-transform: uppercase; margin-bottom: var(--s-2); }
+.chapters__list { counter-reset: ch; display: grid; gap: .1rem; }
+.chapters__list li { counter-increment: ch; }
+.chapters__list a { display: block; padding: .3rem .5rem; font: 500 .88rem/1.35 var(--f-display); text-decoration: none; border-left: 3px solid #d9d4e6; }
+.chapters__list a::before { content: counter(ch, decimal-leading-zero) " "; font: 400 .72rem var(--f-mono); color: var(--tomato); }
+.chapters__list a:hover, .chapters__list a.is-current { background: var(--mint-t); border-left-color: var(--ink); }
+
+/* journal body: chapter headings get numbers, text alternates with visuals */
+.journal { counter-reset: chapter; }
+.journal h2 { counter-increment: chapter; display: flex; align-items: baseline; gap: .7rem; padding-top: .6em; border-top: var(--bw) solid var(--ink); }
+.journal h2::before { content: counter(chapter, decimal-leading-zero); flex: none; padding: .15rem .45rem; font: 400 .85rem var(--f-pixel); background: var(--mint); border: 1.5px solid var(--ink); border-radius: 4px; transform: rotate(-3deg) translateY(-.15em); }
+.journal .figure--right, .journal .figure--left { margin-top: .6rem; }
+@media (min-width: 900px) { .journal .figure--wide { margin-inline: -2rem; } .journal .figure--right { margin-right: -2rem; } .journal .figure--left { margin-left: -2rem; } }
+.result, .lessons { margin-top: var(--s-7); padding: var(--s-5); border: var(--bw) solid var(--ink); border-radius: var(--r-md); box-shadow: var(--shadow); }
+.result { background: var(--mint-t); }
+.lessons { background: var(--lemon-t); }
+.result__title, .lessons__title { margin: 0 0 var(--s-3); font-size: 1.5rem; }
+.journal .result__title, .journal .lessons__title { display: block; border: 0; padding: 0; }
+.journal .result__title::before, .journal .lessons__title::before { content: none; }
+.lessons ol { counter-reset: lesson; list-style: none; padding: 0; }
+.lessons li { counter-increment: lesson; position: relative; padding-left: 2.2rem; }
+.lessons li::before { content: counter(lesson); position: absolute; left: 0; top: .1em; width: 1.5rem; height: 1.5rem; display: grid; place-items: center; font: 400 .8rem var(--f-pixel); background: var(--lemon); border: 1.5px solid var(--ink); border-radius: 50%; }
+
+@media (max-width: 860px) {
+  .quest__layout { grid-template-columns: 1fr; gap: var(--s-5); }
+  .quest__side { position: static; }
+  .chapters { display: none !important; }
+  .quest__titlecard { padding: var(--s-4); margin-top: -2rem; }
+}

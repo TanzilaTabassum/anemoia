@@ -1,0 +1,18 @@
+{%- comment -%}
+  One <img> tag, done properly: lazy loading, async decoding, alt text, and (optionally)
+  responsive srcset using the -480 / -960 / -1600 files made by tools/make-sizes.py.
+  Params: file, item, alt, class, sizes, loading (lazy|eager), width, height
+{%- endcomment -%}
+{%- capture ig_src %}{% include img-url.html file=include.file item=include.item %}{% endcapture -%}
+{%- assign ig_src = ig_src | strip -%}
+{%- assign ig_ext = ig_src | split: "." | last -%}
+{%- assign ig_srcset = "" -%}
+{%- if site.responsive_images and ig_ext != "svg" and ig_ext != "gif" -%}
+  {%- assign ig_n = ig_src | size | minus: ig_ext.size | minus: 1 -%}
+  {%- assign ig_base = ig_src | slice: 0, ig_n -%}
+  {%- for w in site.image_sizes -%}
+    {%- capture ig_piece %}{{ ig_base }}-{{ w }}.{{ ig_ext }} {{ w }}w{% endcapture -%}
+    {%- if forloop.first -%}{%- assign ig_srcset = ig_piece -%}{%- else -%}{%- assign ig_srcset = ig_srcset | append: ", " | append: ig_piece -%}{%- endif -%}
+  {%- endfor -%}
+{%- endif -%}
+<img src="{{ ig_src }}"{% if ig_srcset != "" %} srcset="{{ ig_srcset }}" sizes="{{ include.sizes | default: '100vw' }}"{% endif %} alt="{{ include.alt | escape }}"{% if include.class %} class="{{ include.class }}"{% endif %}{% if include.width and include.height %} width="{{ include.width }}" height="{{ include.height }}"{% endif %} loading="{{ include.loading | default: 'lazy' }}" decoding="async">

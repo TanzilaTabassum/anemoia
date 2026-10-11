@@ -1,0 +1,9 @@
+{%- comment -%}
+  Link to another piece on the site by its FILE, so the link never breaks if you rename a slug later.
+    {% include link.html to="_art/untitled-no-04.md" %}                 → uses the piece's title
+    {% include link.html to="_art/untitled-no-04.md" text="that painting" %}
+  If the file can't be found, the build still succeeds and an HTML comment tells you which path was wrong.
+{%- endcomment -%}
+{%- assign lk_hit = nil -%}
+{%- for d in site.documents -%}{%- if d.relative_path == include.to -%}{%- assign lk_hit = d -%}{%- break -%}{%- endif -%}{%- endfor -%}
+{%- if lk_hit -%}<a href="{{ lk_hit.url | relative_url }}">{{ include.text | default: lk_hit.title }}</a>{%- else -%}<!-- link.html: no file found at {{ include.to }} -->{{ include.text | default: include.to }}{%- endif -%}

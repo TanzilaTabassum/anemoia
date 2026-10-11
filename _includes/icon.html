@@ -1,0 +1,5 @@
+{%- comment -%}
+  Inline icon from the sprite in icons.html.
+  Usage: {% include icon.html name="star" %}   optional: class="icon--fill"
+{%- endcomment -%}
+<svg class="icon {{ include.class }}" aria-hidden="true" focusable="false"><use href="#i-{{ include.name }}"></use></svg>

@@ -1,0 +1,29 @@
+{%- comment -%}
+  Previous / Next within one collection, by date.
+  Param: items  (e.g. items=site.art)
+  "Previous" = the next-older piece, "Next" = the next-newer piece.
+{%- endcomment -%}
+{%- assign pn_list = include.items | sort: "date" -%}
+{%- assign pn_pos = -1 -%}
+{%- for d in pn_list -%}{%- if d.url == page.url -%}{%- assign pn_pos = forloop.index0 -%}{%- endif -%}{%- endfor -%}
+{%- assign pn_prev = nil -%}
+{%- assign pn_next = nil -%}
+{%- if pn_pos > 0 -%}{%- assign pn_p = pn_pos | minus: 1 -%}{%- assign pn_prev = pn_list[pn_p] -%}{%- endif -%}
+{%- assign pn_last = pn_list.size | minus: 1 -%}
+{%- if pn_pos >= 0 and pn_pos < pn_last -%}{%- assign pn_n = pn_pos | plus: 1 -%}{%- assign pn_next = pn_list[pn_n] -%}{%- endif -%}
+{%- if pn_prev or pn_next %}
+<nav class="prevnext wrap" aria-label="{{ include.label | default: 'More in this section' }}">
+  {%- if pn_prev %}
+  <a class="prevnext__link prevnext__link--prev" href="{{ pn_prev.url | relative_url }}" rel="prev">
+    <span class="prevnext__dir">{% include icon.html name="arrow-left" %} Previous</span>
+    <span class="prevnext__title">{{ pn_prev.title }}</span>
+  </a>
+  {%- else %}<span></span>{% endif %}
+  {%- if pn_next %}
+  <a class="prevnext__link prevnext__link--next" href="{{ pn_next.url | relative_url }}" rel="next">
+    <span class="prevnext__dir">Next {% include icon.html name="arrow-right" %}</span>
+    <span class="prevnext__title">{{ pn_next.title }}</span>
+  </a>
+  {%- endif %}
+</nav>
+{%- endif -%}

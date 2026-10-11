@@ -1,0 +1,16 @@
+{%- comment -%}
+  Turns an image reference from front matter into a real URL.
+    "main.jpg"            → /assets/images/<collection>/<slug>/main.jpg   (the item's own folder)
+    "/assets/…/x.jpg"     → used as-is (plus baseurl)
+    "https://…"           → used as-is
+  Params: file, item (defaults to the current page)
+{%- endcomment -%}
+{%- assign iu_f = include.file | strip -%}
+{%- assign iu_it = include.item | default: page -%}
+{%- assign iu_first = iu_f | slice: 0, 1 -%}
+{%- comment -%} the folder name is the last part of the page's URL, i.e. the file name {%- endcomment -%}
+{%- assign iu_slug = iu_it.url | split: "/" | last -%}
+{%- if iu_f contains "://" -%}{{ iu_f }}
+{%- elsif iu_first == "/" -%}{{ iu_f | relative_url }}
+{%- else -%}{{ "/assets/images/" | append: iu_it.collection | append: "/" | append: iu_slug | append: "/" | append: iu_f | relative_url }}
+{%- endif -%}

@@ -1,0 +1,29 @@
+---
+layout: null
+sitemap: false
+---
+{%- include all-content.html -%}
+[
+{%- for d in all_content %}
+  {%- capture d_group %}{% include item-group.html item=d %}{% endcapture -%}
+  {%- capture d_label %}{% include item-label.html item=d %}{% endcapture -%}
+  {%- capture d_sub %}{% include item-meta.html item=d %}{% endcapture -%}
+  {%- assign d_desc = d.description | default: d.subtitle | default: "" %}
+  {
+    "title": {{ d.title | jsonify }},
+    "url": {{ d.url | relative_url | jsonify }},
+    "date": {{ d.date | date: "%Y-%m-%d" | jsonify }},
+    "date_display": {{ d.date | date: site.date_long | jsonify }},
+    "collection": {{ d.collection | jsonify }},
+    "group": {{ d_group | strip | jsonify }},
+    "subtype": {{ d.type | default: "" | jsonify }},
+    "label": {{ d_label | strip | jsonify }},
+    "sub": {{ d_sub | strip | strip_html | jsonify }},
+    "medium": {{ d.medium | default: "" | jsonify }},
+    "location": {{ d.location | default: "" | jsonify }},
+    "description": {{ d_desc | strip_html | normalize_whitespace | jsonify }},
+    "excerpt": {{ d.excerpt | strip_html | normalize_whitespace | truncate: 400 | jsonify }},
+    "tags": {{ d.tags | jsonify }}
+  }{% unless forloop.last %},{% endunless %}
+{%- endfor %}
+]

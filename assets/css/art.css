@@ -1,0 +1,41 @@
+/* ART — gallery. Warm, framed, quiet. */
+.gallery-head { padding-block: var(--s-8) var(--s-5); }
+.gallery-head h1 { margin-top: var(--s-2); }
+.gallery-head p { margin-top: var(--s-3); max-width: 34rem; font: 400 1.3rem/1.5 var(--f-read); color: var(--ink-soft); }
+
+/* masonry-ish: CSS columns keep each artwork at its natural proportions */
+.gallery { columns: 3 17rem; column-gap: var(--s-6); padding-bottom: var(--s-8); }
+.piece { break-inside: avoid; margin: 0 0 var(--s-6); }
+.piece:nth-child(3n+2) { margin-top: var(--s-6); }
+.piece__link { display: block; text-decoration: none; padding: .65rem .65rem .9rem; background: #fff; border: var(--bw) solid var(--ink); box-shadow: var(--shadow); transition: transform .2s, box-shadow .2s; }
+.piece:nth-child(odd) .piece__link { transform: rotate(-.5deg); }
+.piece:nth-child(even) .piece__link { transform: rotate(.4deg); }
+.piece__link:hover { background: #fff; transform: rotate(0) translateY(-4px); box-shadow: var(--shadow-lg); }
+.piece__img { background: var(--tomato-t); border: 1.5px solid var(--ink); }
+.piece__img img { width: 100%; }
+.piece__title { margin-top: .75rem; font: 800 1.15rem/1.2 var(--f-display); }
+.piece__meta { margin-top: .15rem; font: 400 .76rem/1.4 var(--f-mono); color: var(--ink-soft); }
+
+/* single artwork */
+.artwork__head { padding-block: var(--s-7) var(--s-5); text-align: center; }
+.artwork__title { margin-top: var(--s-3); font-size: clamp(2.2rem, 6vw, 4rem); }
+.artwork__meta { display: flex; flex-wrap: wrap; justify-content: center; gap: var(--s-3) var(--s-6); margin-top: var(--s-4); }
+.artwork__meta dt { font: 500 .7rem var(--f-mono); letter-spacing: .12em; text-transform: uppercase; color: var(--ink-soft); }
+.artwork__meta dd { font: 600 1.05rem var(--f-read); }
+.artwork__stage { max-width: 1100px; margin: var(--s-5) auto 0; padding-inline: var(--gutter); }
+.artwork__frame { width: fit-content; max-width: 100%; margin-inline: auto; padding: clamp(.6rem, 2vw, 1.4rem); background: #fff; border: var(--bw) solid var(--ink); box-shadow: var(--shadow-lg); }
+.artwork__frame a { display: block; cursor: zoom-in; text-decoration: none; }
+.artwork__frame a:hover { background: none; }
+.artwork__img { width: auto; max-width: 100%; height: auto; max-height: 88vh; margin-inline: auto; border: 1.5px solid var(--ink); background: var(--tomato-t); }
+.artwork__hint { margin-top: var(--s-3); text-align: center; font: 400 .75rem var(--f-mono); color: var(--ink-soft); }
+.artwork__about { padding-top: var(--s-7); }
+.artwork__tags { margin-top: var(--s-5); }
+
+.process { padding-top: var(--s-7); }
+.process__list { display: grid; gap: var(--s-6); grid-template-columns: repeat(auto-fill, minmax(14rem, 1fr)); counter-reset: step; }
+.process__step { counter-increment: step; }
+.process__img { display: block; padding: .5rem; background: #fff; border: var(--bw) solid var(--ink); box-shadow: var(--shadow-sm); transition: transform .15s; }
+.process__img:hover { background: #fff; transform: rotate(-.8deg) scale(1.02); }
+.process__img img { width: 100%; aspect-ratio: 1; object-fit: cover; }
+.process__label { margin-top: var(--s-3); font: 400 .92rem/1.5 var(--f-read); }
+.process__label .sticker { margin-right: .3rem; }

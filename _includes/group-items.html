@@ -1,0 +1,20 @@
+{%- comment -%}
+  Gives you the items for one "door", newest first, in a variable called  group_items.
+    {% include group-items.html group="reviews" %}   → group_items
+  Groups: art | photography | sidequests | articles | reviews | writing (= articles + reviews)
+{%- endcomment -%}
+{%- assign group_items = "" | split: "" -%}
+{%- case include.group -%}
+  {%- when "art" -%}
+    {%- assign group_items = site.art | sort: "date" | reverse -%}
+  {%- when "photography" -%}
+    {%- assign group_items = site.photography | sort: "date" | reverse -%}
+  {%- when "sidequests" -%}
+    {%- assign group_items = site.sidequests | sort: "date" | reverse -%}
+  {%- when "writing" -%}
+    {%- assign group_items = site.writing | sort: "date" | reverse -%}
+  {%- when "articles", "reviews" -%}
+    {%- assign gi_types = site.data.writing_types | where: "group", include.group -%}
+    {%- assign gi_keys = gi_types | map: "key" -%}
+    {%- assign group_items = site.writing | where_exp: "d", "gi_keys contains d.type" | sort: "date" | reverse -%}
+{%- endcase -%}

@@ -1,0 +1,7 @@
+{%- comment -%}
+  Two images side by side (stacks on phones).
+    {% include figure-pair.html a="before.jpg" a_alt="…" a_caption="Before" b="after.jpg" b_alt="…" b_caption="After" %}
+{%- endcomment -%}
+{%- capture fp_a %}{% include figure.html src=include.a alt=include.a_alt caption=include.a_caption kind=include.kind sizes="(min-width: 800px) 40vw, 90vw" %}{% endcapture -%}
+{%- capture fp_b %}{% include figure.html src=include.b alt=include.b_alt caption=include.b_caption kind=include.kind sizes="(min-width: 800px) 40vw, 90vw" %}{% endcapture -%}
+<div class="figure-pair">{{ fp_a | strip }}{{ fp_b | strip }}</div>

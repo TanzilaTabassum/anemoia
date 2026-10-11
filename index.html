@@ -1,0 +1,86 @@
+---
+layout: default
+title: Home
+styles: [home]
+description: A personal corner of the internet — art, photographs, writing and small ridiculous quests.
+---
+{%- include all-content.html -%}
+{%- assign cur = site.data.currently -%}
+
+<section class="hero wrap" aria-labelledby="hero-h">
+  <div class="hero__grid">
+    <div>
+      <p class="eyebrow">A personal publication · est. 2026</p>
+      <h1 class="hero__title" id="hero-h">ANE<em>MOIA</em></h1>
+      <p class="hero__poem">A small room on the internet for things I made, things I saw, things I wrote, and things I was far too confident I could learn in a weekend.</p>
+      <p class="hero__def"><b>anemoia</b> <i>(n.)</i> — nostalgia for a time you've never known. Come in, look around, follow the links down.</p>
+    </div>
+    <div class="hero__art" aria-hidden="true">
+      <span class="blob blob--1"></span><span class="blob blob--2"></span><span class="blob blob--3"></span><span class="blob blob--4"></span>
+    </div>
+  </div>
+</section>
+
+{%- if featured_content.size > 0 %}
+<section class="home-section wrap" aria-labelledby="featured-h">
+  <div class="section-head">
+    <h2 class="section-head__title" id="featured-h">Featured</h2>
+    <p class="section-head__kicker">hand-picked — set <code>featured: true</code> on any piece</p>
+  </div>
+  <div class="featured">
+    {%- for item in featured_content limit: site.featured_limit %}
+      {%- if forloop.first -%}{%- assign f_size = "lg" -%}{%- else -%}{%- assign f_size = "md" -%}{%- endif %}
+      {% include card.html item=item size=f_size %}
+    {%- endfor %}
+  </div>
+</section>
+{%- endif %}
+
+<section class="home-section wrap" aria-labelledby="explore-h">
+  <div class="section-head">
+    <h2 class="section-head__title" id="explore-h">Explore by category</h2>
+  </div>
+  <div class="doors">
+    {%- for s in site.data.sections %}
+      {%- include group-items.html group=s.id -%}
+    <a class="door sec-{{ s.id }}" href="{{ s.url | relative_url }}">
+      {% include icon.html name=s.icon class="door__icon" %}
+      <span class="door__label">{{ s.label }}</span>
+      <span class="door__blurb">{{ s.blurb }}</span>
+      <span class="door__count">{{ group_items.size }} piece{% if group_items.size != 1 %}s{% endif %} →</span>
+    </a>
+    {%- endfor %}
+  </div>
+</section>
+
+<section class="home-section wrap" aria-labelledby="latest-h">
+  <div class="section-head">
+    <h2 class="section-head__title" id="latest-h">Latest additions</h2>
+    <p class="section-head__kicker"><a href="{{ '/archive/' | relative_url }}">see everything in the archive →</a></p>
+  </div>
+  <div class="latest">
+    {%- for item in all_content limit: site.latest_limit %}
+      {%- capture l_group %}{% include item-group.html item=item %}{% endcapture -%}
+      {%- capture l_label %}{% include item-label.html item=item %}{% endcapture -%}
+    <a class="latest__item sec-{{ l_group | strip }}" href="{{ item.url | relative_url }}">
+      <span class="latest__date">{{ item.date | date: site.date_long }}</span>
+      <span class="latest__title">{{ item.title }}{% assign l_d = item.description | default: item.subtitle %}{% if l_d %}<small>{{ l_d | strip_html | truncate: 110 }}</small>{% endif %}</span>
+      <span class="sticker">{{ l_label | strip }}</span>
+    </a>
+    {%- endfor %}
+  </div>
+</section>
+
+{%- if cur.items %}
+<section class="home-section wrap" aria-labelledby="now-h">
+  <aside class="currently">
+    <h2 class="currently__title" id="now-h">Right now</h2>
+    <dl>
+      {%- for row in cur.items %}
+      <dt>{{ row.label }}</dt><dd>{{ row.text }}</dd>
+      {%- endfor %}
+    </dl>
+    {%- if cur.updated %}<p class="currently__updated">updated {{ cur.updated | date: site.date_long }}</p>{% endif %}
+  </aside>
+</section>
+{%- endif %}

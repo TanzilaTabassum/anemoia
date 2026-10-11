@@ -1,0 +1,44 @@
+<footer class="site-footer">
+  <div class="site-footer__squiggle" aria-hidden="true"></div>
+  <div class="wrap site-footer__grid">
+    <div class="site-footer__brand">
+      <a class="brand brand--lg" href="{{ '/' | relative_url }}">
+        {% include icon.html name="wind" class="brand__icon" %}
+        <span class="brand__word">{{ site.title }}</span>
+      </a>
+      <p>{{ site.description }}</p>
+      <p class="site-footer__note">{% include icon.html name="heart" class="icon--fill" %} made by hand, grown slowly</p>
+    </div>
+
+    <nav aria-labelledby="ft-explore">
+      <h2 class="footer-h" id="ft-explore">Explore</h2>
+      <ul>
+        {%- for s in site.data.sections %}
+        <li><a href="{{ s.url | relative_url }}">{{ s.label }}</a></li>
+        {%- endfor %}
+      </ul>
+    </nav>
+
+    <nav aria-labelledby="ft-browse">
+      <h2 class="footer-h" id="ft-browse">Wander</h2>
+      <ul>
+        {%- for link in site.data.navigation.primary %}
+        <li><a href="{{ link.url | relative_url }}">{{ link.label }}</a></li>
+        {%- endfor %}
+      </ul>
+    </nav>
+
+    <div>
+      <h2 class="footer-h" id="ft-else">Elsewhere</h2>
+      <ul aria-labelledby="ft-else">
+        {%- for s in site.data.social %}
+        <li><a href="{{ s.url }}"{% unless s.url contains 'mailto:' %} rel="me noopener" target="_blank"{% endunless %}>{{ s.label }} {% include icon.html name="arrow-up-right" %}</a>{% if s.note %} <span class="footer-note">{{ s.note }}</span>{% endif %}</li>
+        {%- endfor %}
+      </ul>
+    </div>
+  </div>
+  <div class="wrap site-footer__base">
+    <p>© {{ site.time | date: "%Y" }} {{ site.author }}. All art, photographs &amp; words are mine unless noted.</p>
+    <p><a href="{{ '/archive/' | relative_url }}">Archive</a> · <a href="{{ '/search/' | relative_url }}">Search</a> · <a href="#top">Back to top ↑</a></p>
+  </div>
+</footer>

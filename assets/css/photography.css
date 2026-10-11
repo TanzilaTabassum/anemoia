@@ -1,0 +1,57 @@
+/* PHOTOGRAPHY — independent photo magazine. Big pictures, mono datelines, almost no chrome. */
+.mag-head { padding-block: var(--s-8) var(--s-5); }
+.mag-head h1 { margin-top: var(--s-2); letter-spacing: -.04em; }
+.mag-head p { margin-top: var(--s-3); max-width: 34rem; font: 400 1.3rem/1.5 var(--f-read); color: var(--ink-soft); }
+
+/* series index: alternating big covers */
+.issues { display: grid; gap: var(--s-8); padding-bottom: var(--s-8); }
+.issue { display: grid; grid-template-columns: 1.7fr 1fr; gap: var(--s-6); align-items: end; text-decoration: none; }
+.issue:nth-child(even) { grid-template-columns: 1fr 1.7fr; }
+.issue:nth-child(even) .issue__img { order: 2; }
+.issue:hover { background: none; }
+.issue__img { overflow: hidden; border: var(--bw) solid var(--ink); background: var(--sky-t); aspect-ratio: 3 / 2; }
+.issue__img img { width: 100%; height: 100%; object-fit: cover; transition: transform .6s; }
+.issue:hover .issue__img img { transform: scale(1.04); }
+.issue__no { font: 400 .8rem var(--f-pixel); letter-spacing: .1em; color: var(--ink-soft); }
+.issue__title { margin-top: var(--s-2); font-size: clamp(2.2rem, 5vw, 3.8rem); text-transform: uppercase; letter-spacing: -.03em; }
+.issue:hover .issue__title { text-decoration: underline; text-decoration-color: var(--sky); text-decoration-thickness: 6px; }
+.issue__dateline { margin-top: var(--s-2); font: 500 .8rem var(--f-mono); letter-spacing: .1em; text-transform: uppercase; color: var(--ink-soft); }
+.issue__desc { margin-top: var(--s-3); font: 400 1.1rem/1.5 var(--f-read); color: var(--ink-soft); }
+@media (max-width: 760px) { .issue, .issue:nth-child(even) { grid-template-columns: 1fr; gap: var(--s-3); } .issue:nth-child(even) .issue__img { order: 0; } }
+
+/* series page */
+.series__masthead { padding-block: var(--s-7) var(--s-5); }
+.series__title { margin-top: var(--s-3); font-size: clamp(3rem, 11vw, 8.5rem); line-height: .9; text-transform: uppercase; letter-spacing: -.045em; }
+.series__dateline { display: flex; flex-wrap: wrap; gap: .3rem var(--s-5); margin-top: var(--s-4); font: 500 .82rem var(--f-mono); letter-spacing: .1em; text-transform: uppercase; }
+.series__dateline > * + *::before { content: "/"; margin-right: var(--s-5); color: var(--tomato); }
+.series__opening { max-width: 1500px; margin-inline: auto; padding-inline: clamp(0rem, 2vw, 2rem); }
+.series__intro { padding-block: var(--s-6); display: grid; gap: var(--s-4); }
+.series__dek { max-width: 38rem; font: italic 400 clamp(1.35rem, 2.6vw, 1.8rem)/1.4 var(--f-read); }
+.series__note { max-width: 38rem; }
+
+.shot { margin: 0; }
+.shot__link { display: block; overflow: hidden; border: var(--bw) solid var(--ink); background: var(--sky-t); cursor: zoom-in; }
+.shot__link:hover { background: var(--sky-t); }
+.shot img { width: 100%; height: 100%; object-fit: cover; transition: transform .6s; }
+.shot__link:hover img { transform: scale(1.03); }
+.shot__cap { margin-top: .5rem; font: 400 .8rem/1.5 var(--f-mono); color: var(--ink-soft); max-width: 36rem; }
+.shot--hero .shot__link { aspect-ratio: 16 / 9; }
+.shot--hero .shot__cap { padding-inline: var(--gutter); }
+
+/* editorial grid: 12 columns, photos choose how many to span */
+.series__grid { display: grid; grid-template-columns: repeat(12, 1fr); gap: var(--s-6) var(--s-5); align-items: start; padding-bottom: var(--s-7); }
+.shot--wide  { grid-column: 1 / span 12; } .shot--wide .shot__link { aspect-ratio: 16 / 9; }
+.shot--tall  { grid-column: span 5; }     .shot--tall .shot__link { aspect-ratio: 4 / 5; }
+.shot--half  { grid-column: span 7; }     .shot--half .shot__link { aspect-ratio: 3 / 2; }
+.shot--third { grid-column: span 4; }     .shot--third .shot__link { aspect-ratio: 1; }
+.shot--hero  { grid-column: 1 / -1; }
+.shot--tall + .shot--half, .shot--tall + .shot--tall { margin-top: var(--s-7); }
+.series__grid .shot:nth-child(4n+3):not(.shot--wide) { margin-top: var(--s-6); }
+@media (max-width: 760px) {
+  /* phones: one photo per row, full width — like turning magazine pages */
+  .series__grid { grid-template-columns: 1fr; gap: var(--s-6); }
+  .series__grid .shot { grid-column: 1 / -1; margin-top: 0 !important; }
+  .shot--tall .shot__link { aspect-ratio: 4 / 5; }
+  .shot--third .shot__link { aspect-ratio: 1; }
+}
+.series__tags { padding-bottom: var(--s-4); }

@@ -1,0 +1,9 @@
+{%- comment -%} Short badge text for an item: Art, Photography, Side Quest, Essay, Review, Life… {%- endcomment -%}
+{%- case include.item.collection -%}
+  {%- when "art" -%}Art
+  {%- when "photography" -%}Photography
+  {%- when "sidequests" -%}Side Quest
+  {%- when "writing" -%}
+    {%- assign il_t = site.data.writing_types | where: "key", include.item.type | first -%}
+    {{- il_t.label | default: "Writing" -}}
+{%- endcase -%}

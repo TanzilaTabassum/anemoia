@@ -1,0 +1,21 @@
+<a class="skip-link" href="#main">Skip to content</a>
+<header class="site-header">
+  <div class="wrap site-header__bar">
+    <a class="brand" href="{{ '/' | relative_url }}" aria-label="{{ site.title }} — home">
+      {% include icon.html name="wind" class="brand__icon" %}
+      <span class="brand__word">{{ site.title }}</span>
+    </a>
+    <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="site-nav">
+      <span class="nav-toggle__label">Menu</span>
+      <span class="nav-toggle__bars" aria-hidden="true"></span>
+    </button>
+    {% include navigation.html %}
+  </div>
+  <nav class="sections-strip" aria-label="Sections">
+    <ul class="wrap">
+      {%- for s in site.data.sections %}
+      <li><a class="sections-strip__link sec-{{ s.id }}" href="{{ s.url | relative_url }}"{% if page.url == s.url %} aria-current="page"{% endif %}><span class="dot" aria-hidden="true"></span>{{ s.label }}</a></li>
+      {%- endfor %}
+    </ul>
+  </nav>
+</header>

@@ -1,0 +1,29 @@
+# The five "doors" into the site (homepage tiles + the thin strip under the header).
+# `id` doubles as the colour class (.sec-<id>) and as the content "group".
+# Articles and Reviews are separate doors but live in the one WRITING collection;
+# which door a piece belongs to is decided by _data/writing_types.yml.
+- id: articles
+  label: Articles
+  url: /articles/
+  icon: pen
+  blurb: Essays and long thoughts that got out of hand.
+- id: reviews
+  label: Reviews
+  url: /reviews/
+  icon: book
+  blurb: Films and books, and what they did to me.
+- id: art
+  label: Art
+  url: /art/
+  icon: brush
+  blurb: Paintings, sketches and the messy middle.
+- id: photography
+  label: Photography
+  url: /photography/
+  icon: camera
+  blurb: Series from the street, the rain and the roof.
+- id: sidequests
+  label: Side Quests
+  url: /sidequests/
+  icon: compass
+  blurb: Ridiculous things I tried to learn, written up.

@@ -1,0 +1,13 @@
+<nav id="site-nav" class="site-nav" aria-label="Primary">
+  <ul>
+    {%- for link in site.data.navigation.primary -%}
+      {%- assign nv_on = false -%}
+      {%- if link.url == "/" -%}
+        {%- if page.url == "/" -%}{%- assign nv_on = true -%}{%- endif -%}
+      {%- elsif page.url contains link.url -%}
+        {%- assign nv_on = true -%}
+      {%- endif %}
+    <li><a class="site-nav__link{% if nv_on %} is-active{% endif %}" href="{{ link.url | relative_url }}"{% if nv_on %} aria-current="page"{% endif %}>{{ link.label }}</a></li>
+    {%- endfor %}
+  </ul>
+</nav>

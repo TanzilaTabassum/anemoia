@@ -1,0 +1,21 @@
+# Kinds of writing. A writing file chooses one with   type: essay
+#
+# key      → the value used in front matter
+# label    → small badge on cards ("Essay")
+# section  → the name of the sub-section ("Essays")
+# group    → which homepage door it belongs to: articles | reviews
+#
+# To add a new kind of writing, add a block here. That's all —
+# archive, search, cards and colours pick it up automatically.
+- key: essay
+  label: Essay
+  section: Essays
+  group: articles
+- key: life
+  label: Life
+  section: Life
+  group: articles
+- key: review
+  label: Review
+  section: Film & Books
+  group: reviews

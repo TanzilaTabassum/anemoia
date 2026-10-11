@@ -1,0 +1,20 @@
+---
+layout: default
+title: Articles
+styles: [writing]
+section: articles
+description: Essays and long thoughts that got out of hand.
+---
+<div class="wrap wrap--narrow sec-articles">
+  <header class="pub-head">
+    <p class="eyebrow">The writing desk</p>
+    <h1>Articles</h1>
+    <p>Essays and long thoughts that got out of hand.</p>
+    <nav class="pub-tabs" aria-label="Writing sections">
+      <a href="{{ '/writing/' | relative_url }}">All</a>
+      <a href="{{ '/articles/' | relative_url }}" aria-current="page">Articles</a>
+      <a href="{{ '/reviews/' | relative_url }}">Reviews</a>
+    </nav>
+  </header>
+  {% include writing-index.html group="articles" %}
+</div>

@@ -1,0 +1,51 @@
+---
+layout: default
+---
+{%- comment -%}
+  WRITING PAGE — a long-form reading experience.
+  Front matter used: title, subtitle, date, updated, type, tags, reading_time, description,
+                     cover_image, cover_alt, cover_caption, dropcap (set false to turn the drop cap off), related
+{%- endcomment -%}
+{%- capture wr_group %}{% include item-group.html item=page %}{% endcapture -%}
+{%- assign wr_group = wr_group | strip -%}
+{%- assign wr_type = site.data.writing_types | where: "key", page.type | first -%}
+{%- assign wr_sec = site.data.sections | where: "id", wr_group | first -%}
+
+<article class="essay sec-{{ wr_group }}">
+  <header class="essay__head wrap wrap--read">
+    <p class="eyebrow">
+      <a href="{{ '/writing/' | relative_url }}">Writing</a>
+      <span aria-hidden="true">/</span>
+      <a href="{{ wr_sec.url | default: '/writing/' | relative_url }}">{{ wr_type.section | default: 'Writing' }}</a>
+    </p>
+    <h1 class="essay__title">{{ page.title }}</h1>
+    {%- if page.subtitle %}<p class="essay__deck">{{ page.subtitle }}</p>{% endif %}
+    <p class="essay__meta">
+      <time datetime="{{ page.date | date_to_xmlschema }}">{{ page.date | date: site.date_long }}</time>
+      {%- if page.updated %} <span>· Updated <time datetime="{{ page.updated | date_to_xmlschema }}">{{ page.updated | date: site.date_long }}</time></span>{% endif %}
+      <span>· {% include reading-time.html item=page %}</span>
+    </p>
+    {% include tags.html tags=page.tags %}
+  </header>
+
+  {%- if page.cover_image %}
+  <figure class="essay__cover">
+    <a href="{% capture wr_cov %}{% include img-url.html file=page.cover_image item=page %}{% endcapture %}{{ wr_cov | strip }}" data-lightbox="cover" data-caption="{{ page.cover_caption | escape }}" data-alt="{{ page.cover_alt | escape }}">
+      {% include img.html file=page.cover_image alt=page.cover_alt loading="eager" sizes="(min-width: 1100px) 1000px, 94vw" %}
+    </a>
+    {%- if page.cover_caption %}<figcaption>{{ page.cover_caption }}</figcaption>{% endif %}
+  </figure>
+  {%- endif %}
+
+  <div class="essay__body prose prose--long{% if page.dropcap != false %} prose--dropcap{% endif %} wrap wrap--read">
+    {{ content }}
+  </div>
+
+  <footer class="essay__foot wrap wrap--read">
+    <hr class="squiggle">
+    <p class="essay__end">{% include icon.html name="sparkle" class="icon--fill" %} end of piece</p>
+    <p><a class="btn btn--ghost" href="{{ wr_sec.url | default: '/writing/' | relative_url }}">{% include icon.html name="arrow-left" %} More {{ wr_type.section | default: 'writing' | downcase }}</a></p>
+  </footer>
+</article>
+
+{% include related-content.html %}

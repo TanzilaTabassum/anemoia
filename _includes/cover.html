@@ -1,0 +1,18 @@
+{%- comment -%}
+  Works out which image represents an item (for cards, social previews, etc.).
+  Sets two variables for the caller:  cover_file  and  cover_alt
+  Order of preference: cover_image → image → first photo of a series.
+  Param: item
+{%- endcomment -%}
+{%- assign cv_it = include.item -%}
+{%- assign cover_file = cv_it.cover_image | default: cv_it.image -%}
+{%- assign cover_alt = cv_it.cover_alt | default: cv_it.alt -%}
+{%- if cover_file == nil or cover_file == "" -%}
+  {%- assign cover_file = nil -%}
+  {%- if cv_it.images and cv_it.images.size > 0 -%}
+    {%- assign cv_first = cv_it.images | first -%}
+    {%- assign cover_file = cv_first.file -%}
+    {%- assign cover_alt = cover_alt | default: cv_first.alt -%}
+  {%- endif -%}
+{%- endif -%}
+{%- assign cover_alt = cover_alt | default: "" -%}
