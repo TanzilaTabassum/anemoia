@@ -17,7 +17,7 @@ timezone: Asia/Dhaka
 #   Project site (username.github.io/anemoia):     url: "https://username.github.io"   baseurl: "/anemoia"
 #   Custom domain:                                  url: "https://yourdomain.com"       baseurl: ""
 url: "https://TanzilaTabassum.github.io"
-baseurl: ""
+baseurl: "/anemoia"
 
 # ── Content collections ──────────────────────────────────────
 # Each folder starting with "_" below is one kind of content.
