@@ -8,20 +8,20 @@ layout: default
 {%- endcomment -%}
 {%- assign art_fullfile = page.image_full | default: page.image -%}
 {%- capture art_full %}{% include img-url.html file=art_fullfile item=page %}{% endcapture -%}
-{%- capture art_caption %}{{ page.title }}{% if page.medium %} — {{ page.medium }}{% endif %}, {{ page.date | date: site.date_month }}{% endcapture -%}
+{%- capture art_caption %}{{ page.title }}{% if page.medium and page.medium != "" %} — {{ page.medium }}{% endif %}, {{ page.date | date: site.date_month }}{% endcapture -%}
 
 <article class="artwork sec-art">
   <header class="artwork__head wrap">
     <p class="eyebrow"><a href="{{ '/art/' | relative_url }}">{% include icon.html name="arrow-left" %} Art</a></p>
     <h1 class="artwork__title">{{ page.title }}</h1>
     <dl class="artwork__meta">
-      {%- if page.medium %}<div><dt>Medium</dt><dd>{{ page.medium }}</dd></div>{% endif %}
+      {%- if page.medium and page.medium != "" %}<div><dt>Medium</dt><dd>{{ page.medium }}</dd></div>{% endif %}
       <div><dt>Date</dt><dd><time datetime="{{ page.date | date_to_xmlschema }}">{{ page.date | date: site.date_month }}</time></dd></div>
-      {%- if page.dimensions %}<div><dt>Size</dt><dd>{{ page.dimensions }}</dd></div>{% endif %}
+      {%- if page.dimensions and page.dimensions != "" %}<div><dt>Size</dt><dd>{{ page.dimensions }}</dd></div>{% endif %}
     </dl>
   </header>
 
-  {%- if page.image %}
+  {%- if page.image and page.image != "" %}
   <figure class="artwork__stage">
     <div class="artwork__frame">
       <a href="{{ art_full | strip }}" data-lightbox="art" data-caption="{{ art_caption | strip | escape }}" data-alt="{{ page.alt | escape }}" aria-label="View {{ page.title | escape }} full size">
@@ -37,7 +37,7 @@ layout: default
   <section class="artwork__about wrap wrap--read" aria-labelledby="about-h">
     <h2 class="section-label" id="about-h">About the piece</h2>
     <div class="prose">
-      {{ content }}
+      {% include prefix-links.html html=content %}
     </div>
   </section>
   {%- endif %}
@@ -55,7 +55,7 @@ layout: default
         <a class="process__img" href="{{ pr_full | strip }}" data-lightbox="process" data-caption="{{ pr_cap | strip | escape }}" data-alt="{{ step.alt | escape }}">
           {% include img.html file=pr_file item=page alt=step.alt sizes="(min-width: 900px) 30vw, 80vw" %}
         </a>
-        <p class="process__label"><span class="sticker">{{ step.label | default: forloop.index }}</span>{% if step.caption %} {{ step.caption }}{% endif %}</p>
+        <p class="process__label"><span class="sticker">{{ step.label | default: forloop.index }}</span>{% if step.caption and step.caption != "" %} {{ step.caption }}{% endif %}</p>
       </li>
       {%- endfor %}
     </ol>

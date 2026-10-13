@@ -14,7 +14,7 @@
   <a class="shot__link" href="{{ pf_full | strip }}" data-lightbox="{{ include.group | default: 'series' }}" data-caption="{{ pf_p.caption | escape }}" data-alt="{{ pf_p.alt | escape }}" data-meta="{{ pf_meta | strip | escape }}">
     {% include img.html file=pf_p.file item=pf_s alt=pf_p.alt sizes=include.sizes loading=include.loading %}
   </a>
-  {%- if pf_p.caption %}
+  {%- if pf_p.caption and pf_p.caption != "" %}
   <figcaption class="shot__cap">{{ pf_p.caption }}</figcaption>
   {%- endif %}
 </figure>

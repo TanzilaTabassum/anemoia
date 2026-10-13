@@ -15,4 +15,4 @@
 {%- assign fg_full = include.full | default: include.src -%}
 {%- capture fg_url %}{% include img-url.html file=fg_full item=page %}{% endcapture -%}
 {%- capture fg_img %}{% include img.html file=include.src item=page alt=include.alt sizes=fg_sizes %}{% endcapture -%}
-<figure class="figure figure--{{ fg_align }}{% if include.kind %} figure--{{ include.kind }}{% endif %}"><a href="{{ fg_url | strip }}" data-lightbox="page" data-caption="{{ include.caption | strip_html | escape }}" data-alt="{{ include.alt | escape }}">{{ fg_img | strip }}</a>{% if include.caption %}<figcaption>{{ include.caption }}</figcaption>{% endif %}</figure>
+<figure class="figure figure--{{ fg_align }}{% if include.kind %} figure--{{ include.kind }}{% endif %}"><a href="{{ fg_url | strip }}" data-lightbox="page" data-caption="{{ include.caption | strip_html | escape }}" data-alt="{{ include.alt | escape }}">{{ fg_img | strip }}</a>{% if include.caption and include.caption != "" %}<figcaption>{{ include.caption }}</figcaption>{% endif %}</figure>

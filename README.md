@@ -2,7 +2,22 @@
 
 A personal digital publication — art, photography, writing and side quests — built as a **static site** with Jekyll, plain HTML/CSS/JavaScript and Markdown. It hosts for free on GitHub Pages and is designed to grow to hundreds of pieces.
 
-> The content in this repo (the two paintings, the photo series, three writing pieces and the woodworking quest) is **sample content with generated placeholder images**. Delete or replace it when you start publishing.
+> The demo content that shipped with the first version has been removed — the site starts empty and every category shows a friendly "nothing here yet" box until you publish. The file names in the examples below (`untitled-no-05`, `rainy-days`…) are only examples.
+
+## Two ways to publish
+
+1. **The CMS dashboard** — sign in at <https://app.pagescms.org> with GitHub. It is configured by `.pages.yml` in this repo. Forms for art, photography, writing, side quests, the About page, footer links and the "Right now" box; image upload included.
+2. **By hand** — copy a file from `_templates/`, as described below.
+
+Two extra front-matter fields work on every kind of content:
+
+```yaml
+published: false      # hides the piece from the whole site (keeps the file). Remove the line or set true to show it again.
+featured: true
+featured_order: 1     # optional: 1 shows before 2 in the homepage Featured section
+```
+
+Links and images typed in the body can start with `/` (for example `![alt](/assets/images/uploads/pic.jpg)` or `[text](/art/my-piece/)`); the site adds the `/anemoia` part automatically.
 
 **Contents**
 1. [Run it locally](#1-run-the-site-locally)

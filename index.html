@@ -25,7 +25,7 @@ description: A personal corner of the internet — art, photographs, writing and
 <section class="home-section wrap" aria-labelledby="featured-h">
   <div class="section-head">
     <h2 class="section-head__title" id="featured-h">Featured</h2>
-    <p class="section-head__kicker">hand-picked — set <code>featured: true</code> on any piece</p>
+    <p class="section-head__kicker">hand-picked</p>
   </div>
   <div class="featured">
     {%- for item in featured_content limit: site.featured_limit %}
@@ -47,7 +47,7 @@ description: A personal corner of the internet — art, photographs, writing and
       {% include icon.html name=s.icon class="door__icon" %}
       <span class="door__label">{{ s.label }}</span>
       <span class="door__blurb">{{ s.blurb }}</span>
-      <span class="door__count">{{ group_items.size }} piece{% if group_items.size != 1 %}s{% endif %} →</span>
+      <span class="door__count">{% if group_items.size == 0 %}nothing yet{% else %}{{ group_items.size }} piece{% if group_items.size != 1 %}s{% endif %}{% endif %} →</span>
     </a>
     {%- endfor %}
   </div>
@@ -58,6 +58,9 @@ description: A personal corner of the internet — art, photographs, writing and
     <h2 class="section-head__title" id="latest-h">Latest additions</h2>
     <p class="section-head__kicker"><a href="{{ '/archive/' | relative_url }}">see everything in the archive →</a></p>
   </div>
+  {%- if all_content.size == 0 %}
+  {% include empty-state.html title="Nothing published yet" text="The first piece will show up here the moment it goes live." %}
+  {%- else %}
   <div class="latest">
     {%- for item in all_content limit: site.latest_limit %}
       {%- capture l_group %}{% include item-group.html item=item %}{% endcapture -%}
@@ -69,9 +72,10 @@ description: A personal corner of the internet — art, photographs, writing and
     </a>
     {%- endfor %}
   </div>
+  {%- endif %}
 </section>
 
-{%- if cur.items %}
+{%- if cur.items and cur.items.size > 0 %}
 <section class="home-section wrap" aria-labelledby="now-h">
   <aside class="currently">
     <h2 class="currently__title" id="now-h">Right now</h2>
@@ -80,7 +84,7 @@ description: A personal corner of the internet — art, photographs, writing and
       <dt>{{ row.label }}</dt><dd>{{ row.text }}</dd>
       {%- endfor %}
     </dl>
-    {%- if cur.updated %}<p class="currently__updated">updated {{ cur.updated | date: site.date_long }}</p>{% endif %}
+    {%- if cur.updated and cur.updated != "" %}<p class="currently__updated">updated {{ cur.updated | date: site.date_long }}</p>{% endif %}
   </aside>
 </section>
 {%- endif %}

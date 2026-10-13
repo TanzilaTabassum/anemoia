@@ -13,6 +13,9 @@ description: Photo series from the street, the rain and the roof.
     <p>Series, not single shots — each one a small photo essay with a place and a month attached.</p>
   </header>
 
+  {%- if group_items.size == 0 %}
+  {% include empty-state.html title="The darkroom is quiet" text="The first photo series is still being developed." %}
+  {%- else %}
   <div class="issues">
     {%- for s in group_items %}
       {%- include cover.html item=s -%}
@@ -21,10 +24,11 @@ description: Photo series from the street, the rain and the roof.
       <div>
         <p class="issue__no">SERIES №{{ forloop.rindex | prepend: "00" | slice: -2, 2 }}</p>
         <h2 class="issue__title">{{ s.title }}</h2>
-        <p class="issue__dateline">{% if s.location %}{{ s.location }} · {% endif %}{{ s.date | date: site.date_month }}{% if s.images %} · {{ s.images.size }} photos{% endif %}</p>
-        {%- if s.description %}<p class="issue__desc">{{ s.description }}</p>{% endif %}
+        <p class="issue__dateline">{% if s.location and s.location != "" %}{{ s.location }} · {% endif %}{{ s.date | date: site.date_month }}{% if s.images %} · {{ s.images.size }} photos{% endif %}</p>
+        {%- if s.description and s.description != "" %}<p class="issue__desc">{{ s.description }}</p>{% endif %}
       </div>
     </a>
     {%- endfor %}
   </div>
+  {%- endif %}
 </div>

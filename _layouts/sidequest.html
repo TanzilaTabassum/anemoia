@@ -12,7 +12,7 @@ layout: default
 
 <article class="quest sec-sidequests">
   <header class="quest__banner">
-    {%- if page.cover_image %}
+    {%- if page.cover_image and page.cover_image != "" %}
     <div class="quest__cover">{% include img.html file=page.cover_image alt=page.cover_alt loading="eager" sizes="100vw" %}</div>
     {%- endif %}
     <div class="wrap">
@@ -24,7 +24,7 @@ layout: default
         </p>
         <h1 class="quest__title">{{ page.title }}</h1>
         <p class="quest__dates">{% include dates.html item=page fmt=site.date_long %}</p>
-        {%- if page.description %}<p class="quest__dek">{{ page.description }}</p>{% endif %}
+        {%- if page.description and page.description != "" %}<p class="quest__dek">{{ page.description }}</p>{% endif %}
       </div>
     </div>
   </header>
@@ -36,7 +36,7 @@ layout: default
         <dl>
           {%- if sq_status %}<div><dt>Status</dt><dd>{{ sq_status }}</dd></div>{% endif %}
           <div><dt>Started</dt><dd>{{ page.date | date: site.date_long }}</dd></div>
-          {%- if page.end_date %}<div><dt>Ended</dt><dd>{{ page.end_date | date: site.date_long }}</dd></div>{% endif %}
+          {%- if page.end_date and page.end_date != "" %}<div><dt>Ended</dt><dd>{{ page.end_date | date: site.date_long }}</dd></div>{% endif %}
           {%- for row in page.log %}
           <div><dt>{{ row.label }}</dt><dd>{{ row.value }}</dd></div>
           {%- endfor %}
@@ -50,9 +50,9 @@ layout: default
     </aside>
 
     <div class="journal prose">
-      {{ content }}
+      {% include prefix-links.html html=content %}
 
-      {%- if page.result %}
+      {%- if page.result and page.result != "" %}
       <section class="result" aria-labelledby="result-h">
         <h2 class="result__title" id="result-h">Final result</h2>
         <p>{{ page.result }}</p>

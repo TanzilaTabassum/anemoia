@@ -411,3 +411,13 @@ body.lb-open { overflow: hidden; }
   *, *::before, *::after { animation-duration: .01ms !important; transition-duration: .01ms !important; }
   .js .reveal { opacity: 1; transform: none; }
 }
+
+/* ── 13 · Empty states ("nothing here yet") ─────────────────── */
+.empty { padding: var(--s-6); text-align: center; border: 2px dashed var(--ink); border-radius: var(--r-md); font: 400 1.1rem var(--f-read); }
+.empty-state {
+  max-width: 34rem; margin: var(--s-7) auto var(--s-8); padding: var(--s-7) var(--s-5);
+  text-align: center; background: var(--paper); border: 2px dashed var(--ink); border-radius: var(--r-md);
+}
+.empty-state__tag { display: inline-block; margin: 0 0 var(--s-3); padding: .15rem .6rem; font: 400 .75rem var(--f-pixel); letter-spacing: .12em; text-transform: uppercase; border: 2px solid var(--ink); border-radius: 999px; background: var(--accent-t, var(--lemon-t)); }
+.empty-state__title { margin: 0; font: 700 clamp(1.4rem, 3vw, 1.9rem)/1.2 var(--f-display); letter-spacing: -.02em; }
+.empty-state__text { margin: var(--s-3) 0 0; color: var(--ink-soft); font: 400 1.1rem/1.5 var(--f-read); }

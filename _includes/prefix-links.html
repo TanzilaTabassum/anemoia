@@ -1,0 +1,21 @@
+{%- comment -%}
+  Makes links and images typed inside the body of a page work on a project site
+  (https://username.github.io/anemoia/) as well as on a custom domain.
+  In Markdown you can write  ![alt](/assets/images/uploads/pic.jpg)  or  [text](/art/my-piece/)
+  and this adds the site's baseurl for you. Does nothing when baseurl is empty.
+    {% include prefix-links.html html=content %}
+{%- endcomment -%}
+{%- assign pl_b = site.baseurl | default: "" -%}
+{%- assign pl = include.html -%}
+{%- if pl_b != "" -%}
+  {%- assign pl_a = 'src="/assets/' -%}{%- assign pl_a2 = 'src="' | append: pl_b | append: '/assets/' -%}
+  {%- assign pl = pl | replace: pl_a, pl_a2 -%}
+  {%- assign pl_a = 'href="/assets/' -%}{%- assign pl_a2 = 'href="' | append: pl_b | append: '/assets/' -%}
+  {%- assign pl = pl | replace: pl_a, pl_a2 -%}
+  {%- assign pl_paths = "art,photography,writing,sidequests,articles,reviews,archive,search,about,contact" | split: "," -%}
+  {%- for p in pl_paths -%}
+    {%- assign pl_a = 'href="/' | append: p | append: '/' -%}{%- assign pl_a2 = 'href="' | append: pl_b | append: '/' | append: p | append: '/' -%}
+    {%- assign pl = pl | replace: pl_a, pl_a2 -%}
+  {%- endfor -%}
+{%- endif -%}
+{{ pl }}

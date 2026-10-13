@@ -17,7 +17,7 @@ layout: default
     <p class="eyebrow"><a href="{{ '/photography/' | relative_url }}">{% include icon.html name="arrow-left" %} Photography</a></p>
     <h1 class="series__title">{{ page.title }}</h1>
     <p class="series__dateline">
-      {%- if page.location %}<span>{{ page.location }}</span>{% endif -%}
+      {%- if page.location and page.location != "" %}<span>{{ page.location }}</span>{% endif -%}
       <time datetime="{{ page.date | date_to_xmlschema }}">{{ page.date | date: site.date_month }}</time>
       {%- if ph_count > 0 %}<span>{{ ph_count }} photograph{% if ph_count != 1 %}s{% endif %}</span>{% endif -%}
     </p>
@@ -31,10 +31,10 @@ layout: default
   {%- endif %}
 
   <div class="series__intro wrap">
-    {%- if page.description %}<p class="series__dek">{{ page.description }}</p>{% endif %}
+    {%- if page.description and page.description != "" %}<p class="series__dek">{{ page.description }}</p>{% endif %}
     {%- assign ph_body = content | strip -%}
     {%- if ph_body != "" %}
-    <div class="prose series__note">{{ content }}</div>
+    <div class="prose series__note">{% include prefix-links.html html=content %}</div>
     {%- endif %}
   </div>
 
@@ -44,7 +44,7 @@ layout: default
       {%- assign ph_pos = forloop.index0 | modulo: ph_pattern.size -%}
       {%- assign ph_size = photo.shape | default: ph_pattern[ph_pos] -%}
       {%- comment -%} the last photo closes the series as a wide frame, so it never sits alone in a corner {%- endcomment -%}
-      {%- if forloop.last and photo.shape == nil %}{% assign ph_size = "wide" %}{% endif %}
+      {%- if forloop.last and photo.shape == nil or forloop.last and photo.shape == "" %}{% assign ph_size = "wide" %}{% endif %}
       {% include photo-figure.html photo=photo series=page size=ph_size sizes="(min-width: 900px) 60vw, 94vw" %}
     {%- endfor %}
   </div>

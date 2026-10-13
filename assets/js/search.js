@@ -108,7 +108,9 @@
     els.count.textContent = rows.length + (rows.length === 1 ? ' piece' : ' pieces') + (filtered ? ' found' : ' in the archive');
 
     if (!rows.length) {
-      els.out.innerHTML = '<p class="empty">Nothing here yet — try fewer filters, or a different word.</p>';
+      els.out.innerHTML = data.length
+        ? '<p class="empty">Nothing found — try fewer filters, or a different word.</p>'
+        : '<p class="empty">Nothing has been published yet. Come back soon.</p>';
       return;
     }
     els.out.innerHTML = rows.map(function (r) {

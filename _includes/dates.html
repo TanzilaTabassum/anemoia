@@ -4,7 +4,7 @@
 {%- assign dt_it = include.item | default: page -%}
 {%- assign dt_fmt = include.fmt | default: site.date_short -%}
 {%- assign dt_start = dt_it.date | date: dt_fmt -%}
-{%- if dt_it.end_date -%}
+{%- if dt_it.end_date and dt_it.end_date != "" -%}
   {%- assign dt_end = dt_it.end_date | date: dt_fmt -%}
   {%- if dt_end != dt_start -%}{{ dt_start }} – {{ dt_end }}{%- else -%}{{ dt_start }}{%- endif -%}
 {%- elsif dt_it.status == "in-progress" -%}{{ dt_start }} – ongoing

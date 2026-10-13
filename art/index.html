@@ -18,14 +18,14 @@ description: Paintings, sketches and the messy middle.
     {%- for p in group_items %}
     <figure class="piece reveal">
       <a class="piece__link" href="{{ p.url | relative_url }}">
-        {%- if p.image %}<div class="piece__img">{% include img.html file=p.image item=p alt=p.alt sizes="(min-width: 900px) 30vw, 90vw" %}</div>{% endif %}
+        {%- if p.image and p.image != "" %}<div class="piece__img">{% include img.html file=p.image item=p alt=p.alt sizes="(min-width: 900px) 30vw, 90vw" %}</div>{% endif %}
         <h2 class="piece__title">{{ p.title }}</h2>
-        <p class="piece__meta">{% if p.medium %}{{ p.medium }} · {% endif %}{{ p.date | date: site.date_month }}</p>
+        <p class="piece__meta">{% if p.medium and p.medium != "" %}{{ p.medium }} · {% endif %}{{ p.date | date: site.date_month }}</p>
       </a>
     </figure>
     {%- endfor %}
   </div>
   {%- else %}
-  <p class="empty">The walls are empty — for now.</p>
+  {% include empty-state.html title="The walls are empty — for now" text="Paintings and sketches will hang here soon." %}
   {%- endif %}
 </div>

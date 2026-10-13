@@ -21,6 +21,9 @@ description: Everything on Anemoia, organised by date, type and tag. Built autom
     </nav>
   </header>
 
+  {%- if all_content.size == 0 %}
+  {% include empty-state.html title="The archive is empty" text="Everything you publish is listed here automatically — by date, type and tag." %}
+  {%- else %}
   <section id="by-date" aria-labelledby="by-date-h">
     <h2 class="visually-hidden" id="by-date-h">By date</h2>
     {%- for y in by_year %}
@@ -83,4 +86,5 @@ description: Everything on Anemoia, organised by date, type and tag. Built autom
     </div>
     {%- endif %}{% endfor %}
   </section>
+  {%- endif %}
 </div>

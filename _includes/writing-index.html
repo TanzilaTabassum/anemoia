@@ -15,12 +15,12 @@
     </div>
     <div>
       <h2 class="entry__title"><a href="{{ w.url | relative_url }}">{{ w.title }}</a></h2>
-      {%- if w.subtitle %}<p class="entry__deck">{{ w.subtitle }}</p>{% endif %}
-      {%- if w.description %}<p class="entry__excerpt">{{ w.description }}</p>{% endif %}
+      {%- if w.subtitle and w.subtitle != "" %}<p class="entry__deck">{{ w.subtitle }}</p>{% endif %}
+      {%- if w.description and w.description != "" %}<p class="entry__excerpt">{{ w.description }}</p>{% endif %}
       {% include tags.html tags=w.tags %}
     </div>
   </article>
   {%- else %}
-  <p class="empty">Nothing published here yet.</p>
+  {% include empty-state.html title="Nothing published here yet" text="Words are being written. Check back soon." %}
   {%- endfor %}
 </div>

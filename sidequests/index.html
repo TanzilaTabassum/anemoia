@@ -13,6 +13,9 @@ description: Ridiculous things I tried to learn, written up like a field journal
     <p>Things I tried to learn, build or survive — written up like the vlogs they could have been.</p>
   </header>
 
+  {%- if group_items.size == 0 %}
+  {% include empty-state.html title="The quest log is blank" text="No quests started yet. Something ridiculous is surely coming." %}
+  {%- else %}
   <div class="log">
     {%- for q in group_items %}
       {%- assign q_status = site.data.quest_status[q.status] -%}
@@ -22,9 +25,10 @@ description: Ridiculous things I tried to learn, written up like a field journal
       <p class="logentry__no" data-no="{{ forloop.rindex | prepend: '00' | slice: -2, 2 }}"></p>
       <h2 class="logentry__title">{{ q.title }}</h2>
       <p class="logentry__dates">{% include dates.html item=q fmt=site.date_short %}</p>
-      {%- if q.description %}<p class="logentry__desc">{{ q.description }}</p>{% endif %}
+      {%- if q.description and q.description != "" %}<p class="logentry__desc">{{ q.description }}</p>{% endif %}
       {%- if q_status %}<span class="status status--{{ q.status }}">{{ q_status }}</span>{% endif %}
     </a>
     {%- endfor %}
   </div>
+  {%- endif %}
 </div>

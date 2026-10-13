@@ -49,5 +49,4 @@
 .result-item__desc { margin-top: var(--s-2); font: 400 1.02rem/1.55 var(--f-read); color: var(--ink-soft); }
 .result-item mark { background: var(--lemon); padding: 0 .1em; }
 .result-item .tags { margin-top: var(--s-3); }
-.empty { padding: var(--s-6); text-align: center; border: 2px dashed var(--ink); border-radius: var(--r-md); font: 400 1.1rem var(--f-read); }
 .noscript-note { margin-top: var(--s-4); padding: var(--s-4); background: var(--lemon-t); border: var(--bw) solid var(--ink); border-radius: var(--r-md); }

@@ -1,13 +1,15 @@
-# Footer + contact links. Replace the placeholder URLs with your real ones.
+# Footer + Contact page links.
+# A link only appears on the site once its "url" is filled in.
+# Add the real addresses (or use the "Links" screen in the CMS).
 - label: Substack
-  url: https://example.substack.com
+  url: ""
   note: long-form writing
 - label: Pinterest
-  url: https://www.pinterest.com/example/
+  url: ""
   note: boards & references
 - label: YouTube
-  url: https://www.youtube.com/@example
+  url: ""
   note: side quests in video form
 - label: Email
-  url: mailto:hello@example.com
-  note: say hello
+  url: ""
+  note: say hello (use  mailto:you@example.com )

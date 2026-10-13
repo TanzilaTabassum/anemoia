@@ -1,13 +1,7 @@
-# The small "Right now" corner on the homepage. Edit freely; add or remove lines.
-updated: 2026-10-06
-items:
-  - label: Thinking about
-    text: why rainy afternoons feel like borrowed time
-  - label: Making
-    text: a second painting in the Untitled series
-  - label: Learning
-    text: how to land a cartwheel without fear
-  - label: Reading
-    text: something slow, with a very good last chapter
-  - label: Watching
-    text: old films with bad subtitles
+# The small "Right now" corner on the homepage.
+# It stays hidden while "items" is empty. Add lines with the CMS, or like this:
+#   items:
+#     - label: Reading
+#       text: a very good book
+updated:
+items: []

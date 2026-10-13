@@ -28,14 +28,17 @@
       </ul>
     </nav>
 
+    {%- assign ft_social = site.data.social | where_exp: "s", "s.url != '' and s.url != nil" %}
+    {%- if ft_social.size > 0 %}
     <div>
       <h2 class="footer-h" id="ft-else">Elsewhere</h2>
       <ul aria-labelledby="ft-else">
-        {%- for s in site.data.social %}
+        {%- for s in ft_social %}
         <li><a href="{{ s.url }}"{% unless s.url contains 'mailto:' %} rel="me noopener" target="_blank"{% endunless %}>{{ s.label }} {% include icon.html name="arrow-up-right" %}</a>{% if s.note %} <span class="footer-note">{{ s.note }}</span>{% endif %}</li>
         {%- endfor %}
       </ul>
     </div>
+    {%- endif %}
   </div>
   <div class="wrap site-footer__base">
     <p>© {{ site.time | date: "%Y" }} {{ site.author }}. All art, photographs &amp; words are mine unless noted.</p>

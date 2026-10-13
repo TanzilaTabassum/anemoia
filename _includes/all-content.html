@@ -2,9 +2,12 @@
   THE one place that gathers every piece of content.
   After including this you have:
     all_content       every art / photography / writing / sidequest item, newest first
-    featured_content  the ones with  featured: true
+    featured_content  the ones with  featured: true  (those with a featured_order come first, 1 before 2)
   Add a new collection to the list below and it flows into home, archive, search and related.
 {%- endcomment -%}
 {%- assign ac_colls = "art,photography,writing,sidequests" | split: "," -%}
 {%- assign all_content = site.documents | where_exp: "d", "ac_colls contains d.collection" | sort: "date" | reverse -%}
-{%- assign featured_content = all_content | where_exp: "d", "d.featured == true" -%}
+{%- assign fc_all = all_content | where_exp: "d", "d.featured == true" -%}
+{%- assign fc_ord = fc_all | where_exp: "d", "d.featured_order" | sort: "featured_order" -%}
+{%- assign fc_rest = fc_all | where_exp: "d", "d.featured_order == nil" -%}
+{%- assign featured_content = fc_ord | concat: fc_rest -%}
