@@ -8,6 +8,7 @@
 {%- assign ac_colls = "art,photography,writing,sidequests" | split: "," -%}
 {%- assign all_content = site.documents | where_exp: "d", "ac_colls contains d.collection" | sort: "date" | reverse -%}
 {%- assign fc_all = all_content | where_exp: "d", "d.featured == true" -%}
-{%- assign fc_ord = fc_all | where_exp: "d", "d.featured_order" | sort: "featured_order" -%}
-{%- assign fc_rest = fc_all | where_exp: "d", "d.featured_order == nil" -%}
-{%- assign featured_content = fc_ord | concat: fc_rest -%}
+{%- assign fc_ord = fc_all | where_exp: "d", "d.featured_order != nil" | where_exp: "d", "d.featured_order != ''" | sort: "featured_order" -%}
+{%- assign fc_nil = fc_all | where_exp: "d", "d.featured_order == nil" -%}
+{%- assign fc_blank = fc_all | where_exp: "d", "d.featured_order == ''" -%}
+{%- assign featured_content = fc_ord | concat: fc_nil | concat: fc_blank -%}

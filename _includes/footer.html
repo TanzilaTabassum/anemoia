@@ -28,14 +28,15 @@
       </ul>
     </nav>
 
-    {%- assign ft_social = site.data.social | where_exp: "s", "s.url != '' and s.url != nil" %}
-    {%- if ft_social.size > 0 %}
+    {%- assign ft_n = 0 %}
+    {%- for s in site.data.social %}{% if s.url and s.url != "" %}{% assign ft_n = ft_n | plus: 1 %}{% endif %}{% endfor %}
+    {%- if ft_n > 0 %}
     <div>
       <h2 class="footer-h" id="ft-else">Elsewhere</h2>
       <ul aria-labelledby="ft-else">
-        {%- for s in ft_social %}
+        {%- for s in site.data.social %}{% if s.url and s.url != "" %}
         <li><a href="{{ s.url }}"{% unless s.url contains 'mailto:' %} rel="me noopener" target="_blank"{% endunless %}>{{ s.label }} {% include icon.html name="arrow-up-right" %}</a>{% if s.note %} <span class="footer-note">{{ s.note }}</span>{% endif %}</li>
-        {%- endfor %}
+        {% endif %}{%- endfor %}
       </ul>
     </div>
     {%- endif %}
