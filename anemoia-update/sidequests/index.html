@@ -1,0 +1,34 @@
+---
+layout: default
+title: Side Quests
+styles: [sidequests]
+section: sidequests
+description: Ridiculous things I tried to learn, written up like a field journal.
+---
+{%- include group-items.html group="sidequests" -%}
+<div class="wrap sec-sidequests">
+  <header class="journal-head">
+    <p class="eyebrow">The quest log · {{ group_items.size }} entr{% if group_items.size == 1 %}y{% else %}ies{% endif %}</p>
+    <h1>Side Quests</h1>
+    <p>Things I tried to learn, build or survive — written up like the vlogs they could have been.</p>
+  </header>
+
+  {%- if group_items.size == 0 %}
+  {% include empty-state.html title="The quest log is blank" text="No quests started yet. Something ridiculous is surely coming." %}
+  {%- else %}
+  <div class="log">
+    {%- for q in group_items %}
+      {%- assign q_status = site.data.quest_status[q.status] -%}
+    <a class="logentry reveal" href="{{ q.url | relative_url }}">
+      {%- include cover.html item=q -%}
+      {%- if cover_file %}<div class="logentry__img">{% include img.html file=cover_file item=q alt=cover_alt sizes="(min-width: 900px) 30vw, 90vw" %}</div>{% endif %}
+      <p class="logentry__no" data-no="{{ forloop.rindex | prepend: '00' | slice: -2, 2 }}"></p>
+      <h2 class="logentry__title">{{ q.title }}</h2>
+      <p class="logentry__dates">{% include dates.html item=q fmt=site.date_short %}</p>
+      {%- if q.description and q.description != "" %}<p class="logentry__desc">{{ q.description }}</p>{% endif %}
+      {%- if q_status %}<span class="status status--{{ q.status }}">{{ q_status }}</span>{% endif %}
+    </a>
+    {%- endfor %}
+  </div>
+  {%- endif %}
+</div>

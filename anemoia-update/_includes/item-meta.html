@@ -1,0 +1,8 @@
+{%- comment -%} The small grey line under a card title. Param: item {%- endcomment -%}
+{%- assign mt_it = include.item -%}
+{%- case mt_it.collection -%}
+  {%- when "art" -%}{% if mt_it.medium and mt_it.medium != "" %}{{ mt_it.medium }} · {% endif %}{{ mt_it.date | date: site.date_month }}
+  {%- when "photography" -%}{% if mt_it.location and mt_it.location != "" %}{{ mt_it.location }} · {% endif %}{{ mt_it.date | date: site.date_month }}
+  {%- when "writing" -%}{{ mt_it.date | date: site.date_long }} · {% include reading-time.html item=mt_it %}
+  {%- when "sidequests" -%}{% include dates.html item=mt_it %}
+{%- endcase -%}

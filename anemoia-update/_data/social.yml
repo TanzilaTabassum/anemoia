@@ -1,0 +1,15 @@
+# Footer + Contact page links.
+# A link only appears on the site once its "url" is filled in.
+# Add the real addresses (or use the "Links" screen in the CMS).
+- label: Substack
+  url: ""
+  note: long-form writing
+- label: Pinterest
+  url: ""
+  note: boards & references
+- label: YouTube
+  url: ""
+  note: side quests in video form
+- label: Email
+  url: ""
+  note: say hello (use  mailto:you@example.com )

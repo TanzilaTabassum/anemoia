@@ -1,0 +1,31 @@
+---
+layout: default
+title: Art
+styles: [art]
+section: art
+description: Paintings, sketches and the messy middle.
+---
+{%- include group-items.html group="art" -%}
+<div class="wrap sec-art">
+  <header class="gallery-head">
+    <p class="eyebrow">Gallery · {{ group_items.size }} piece{% if group_items.size != 1 %}s{% endif %}</p>
+    <h1>Art</h1>
+    <p>Paintings, sketches and the messy middle. Click anything to step closer.</p>
+  </header>
+
+  {%- if group_items.size > 0 %}
+  <div class="gallery">
+    {%- for p in group_items %}
+    <figure class="piece reveal">
+      <a class="piece__link" href="{{ p.url | relative_url }}">
+        {%- if p.image and p.image != "" %}<div class="piece__img">{% include img.html file=p.image item=p alt=p.alt sizes="(min-width: 900px) 30vw, 90vw" %}</div>{% endif %}
+        <h2 class="piece__title">{{ p.title }}</h2>
+        <p class="piece__meta">{% if p.medium and p.medium != "" %}{{ p.medium }} · {% endif %}{{ p.date | date: site.date_month }}</p>
+      </a>
+    </figure>
+    {%- endfor %}
+  </div>
+  {%- else %}
+  {% include empty-state.html title="The walls are empty — for now" text="Paintings and sketches will hang here soon." %}
+  {%- endif %}
+</div>

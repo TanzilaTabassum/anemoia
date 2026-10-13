@@ -1,0 +1,90 @@
+---
+layout: default
+title: Archive
+styles: [archive]
+description: Everything on Anemoia, organised by date, type and tag. Built automatically from the content.
+---
+{%- include all-content.html -%}
+{%- assign by_year = all_content | group_by_exp: "d", "d.date | date: '%Y'" -%}
+{%- assign tag_list = all_content | map: "tags" | join: "," | split: "," | uniq | sort -%}
+
+<div class="wrap wrap--narrow">
+  <header class="cat-head">
+    <p class="eyebrow">The catalogue · {{ all_content.size }} piece{% if all_content.size != 1 %}s{% endif %}</p>
+    <h1>Archive</h1>
+    <p>Everything, sorted three ways. This page builds itself — nothing here is typed by hand.</p>
+    <nav class="tabs" aria-label="Archive views">
+      <a href="#by-date">By date</a>
+      <a href="#by-type">By type</a>
+      <a href="#by-tag">By tag</a>
+      <a href="{{ '/search/' | relative_url }}">Search &amp; filter →</a>
+    </nav>
+  </header>
+
+  {%- if all_content.size == 0 %}
+  {% include empty-state.html title="The archive is empty" text="Everything you publish is listed here automatically — by date, type and tag." %}
+  {%- else %}
+  <section id="by-date" aria-labelledby="by-date-h">
+    <h2 class="visually-hidden" id="by-date-h">By date</h2>
+    {%- for y in by_year %}
+      {%- assign by_month = y.items | group_by_exp: "d", "d.date | date: '%Y-%m'" %}
+    <div class="arch-year">
+      <h3 class="arch-year__h">{{ y.name }} <small>{{ y.items.size }} piece{% if y.items.size != 1 %}s{% endif %}</small></h3>
+      {%- for m in by_month %}
+        {%- assign m_first = m.items | first %}
+      <div class="arch-month">
+        <h4 class="arch-month__h">{{ m_first.date | date: "%B" }}</h4>
+        <ul class="arch-list">
+          {%- for d in m.items %}
+            {%- capture a_group %}{% include item-group.html item=d %}{% endcapture -%}
+            {%- capture a_label %}{% include item-label.html item=d %}{% endcapture %}
+          <li class="sec-{{ a_group | strip }}"><a href="{{ d.url | relative_url }}">{{ d.title }}</a> <span class="sticker">{{ a_label | strip }}</span> <time datetime="{{ d.date | date_to_xmlschema }}">{{ d.date | date: "%-d %b" }}</time></li>
+          {%- endfor %}
+        </ul>
+      </div>
+      {%- endfor %}
+    </div>
+    {%- endfor %}
+  </section>
+
+  <section id="by-type" aria-labelledby="by-type-h">
+    <h2 class="section-head__title" id="by-type-h" style="margin-bottom:var(--s-6)">By type</h2>
+    {%- for s in site.data.sections %}
+      {%- include group-items.html group=s.id -%}
+      {%- if group_items.size > 0 %}
+    <div class="type-block sec-{{ s.id }}">
+      <h3 class="type-block__h"><span class="sticker">{{ s.label }}</span> <span class="type-block__count">{{ group_items.size }}</span></h3>
+      <ul class="arch-list">
+        {%- for d in group_items %}
+        <li><a href="{{ d.url | relative_url }}">{{ d.title }}</a> <time datetime="{{ d.date | date_to_xmlschema }}">{{ d.date | date: "%b %Y" }}</time></li>
+        {%- endfor %}
+      </ul>
+    </div>
+      {%- endif %}
+    {%- endfor %}
+  </section>
+
+  <section id="by-tag" aria-labelledby="by-tag-h">
+    <h2 class="section-head__title" id="by-tag-h" style="margin-bottom:var(--s-5)">By tag</h2>
+    <ul class="tagcloud" aria-label="All tags">
+      {%- for t in tag_list %}{% if t != "" %}
+        {%- assign t_items = all_content | where_exp: "d", "d.tags contains t" %}
+      <li><a class="tag" href="#tag-{{ t | slugify }}"><span aria-hidden="true">#</span>{{ t | replace: '-', ' ' }}<b>{{ t_items.size }}</b></a></li>
+      {%- endif %}{% endfor %}
+    </ul>
+    {%- for t in tag_list %}{% if t != "" %}
+      {%- assign t_items = all_content | where_exp: "d", "d.tags contains t" %}
+    <div class="tag-block">
+      <h3 class="tag-block__h" id="tag-{{ t | slugify }}">#{{ t | replace: '-', ' ' }} <span class="tag-block__count">{{ t_items.size }}</span></h3>
+      <ul class="arch-list">
+        {%- for d in t_items %}
+          {%- capture a_group %}{% include item-group.html item=d %}{% endcapture -%}
+          {%- capture a_label %}{% include item-label.html item=d %}{% endcapture %}
+        <li class="sec-{{ a_group | strip }}"><a href="{{ d.url | relative_url }}">{{ d.title }}</a> <span class="sticker">{{ a_label | strip }}</span></li>
+        {%- endfor %}
+      </ul>
+    </div>
+    {%- endif %}{% endfor %}
+  </section>
+  {%- endif %}
+</div>

@@ -1,0 +1,77 @@
+---
+layout: default
+---
+{%- comment -%}
+  SIDE QUEST — a written vlog / field journal.
+  Front matter used: title, date (= start date), end_date, status, description, cover_image, cover_alt,
+                     log[] (label/value pairs for the quest log), result, lessons[], tags, related
+  The journal itself is the Markdown body: ## headings become numbered chapters,
+  figures float beside the text, and > blockquotes with {: .callout .fail } etc. become field notes.
+{%- endcomment -%}
+{%- assign sq_status = site.data.quest_status[page.status] -%}
+
+<article class="quest sec-sidequests">
+  <header class="quest__banner">
+    {%- if page.cover_image and page.cover_image != "" %}
+    <div class="quest__cover">{% include img.html file=page.cover_image alt=page.cover_alt loading="eager" sizes="100vw" %}</div>
+    {%- endif %}
+    <div class="wrap">
+      <div class="quest__titlecard">
+        <p class="eyebrow"><a href="{{ '/sidequests/' | relative_url }}">{% include icon.html name="arrow-left" %} Side Quests</a></p>
+        <p class="quest__badges">
+          <span class="sticker">Side Quest</span>
+          {%- if sq_status %} <span class="status status--{{ page.status }}">{{ sq_status }}</span>{% endif %}
+        </p>
+        <h1 class="quest__title">{{ page.title }}</h1>
+        <p class="quest__dates">{% include dates.html item=page fmt=site.date_long %}</p>
+        {%- if page.description and page.description != "" %}<p class="quest__dek">{{ page.description }}</p>{% endif %}
+      </div>
+    </div>
+  </header>
+
+  <div class="wrap quest__layout">
+    <aside class="quest__side" aria-label="Quest log">
+      <div class="questlog">
+        <h2 class="questlog__title">{% include icon.html name="compass" %} Quest log</h2>
+        <dl>
+          {%- if sq_status %}<div><dt>Status</dt><dd>{{ sq_status }}</dd></div>{% endif %}
+          <div><dt>Started</dt><dd>{{ page.date | date: site.date_long }}</dd></div>
+          {%- if page.end_date and page.end_date != "" %}<div><dt>Ended</dt><dd>{{ page.end_date | date: site.date_long }}</dd></div>{% endif %}
+          {%- for row in page.log %}
+          <div><dt>{{ row.label }}</dt><dd>{{ row.value }}</dd></div>
+          {%- endfor %}
+        </dl>
+        {% include tags.html tags=page.tags %}
+      </div>
+      <nav class="chapters" aria-label="Chapters" hidden>
+        <h2 class="chapters__title">Chapters</h2>
+        <ol class="chapters__list"></ol>
+      </nav>
+    </aside>
+
+    <div class="journal prose">
+      {% include prefix-links.html html=content %}
+
+      {%- if page.result and page.result != "" %}
+      <section class="result" aria-labelledby="result-h">
+        <h2 class="result__title" id="result-h">Final result</h2>
+        <p>{{ page.result }}</p>
+      </section>
+      {%- endif %}
+
+      {%- if page.lessons and page.lessons.size > 0 %}
+      <section class="lessons" aria-labelledby="lessons-h">
+        <h2 class="lessons__title" id="lessons-h">Lessons learned</h2>
+        <ol>
+          {%- for l in page.lessons %}
+          <li>{{ l }}</li>
+          {%- endfor %}
+        </ol>
+      </section>
+      {%- endif %}
+    </div>
+  </div>
+</article>
+
+{% include prev-next.html items=site.sidequests label="More side quests" %}
+{% include related-content.html %}

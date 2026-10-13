@@ -1,0 +1,71 @@
+---
+layout: default
+---
+{%- comment -%}
+  ARTWORK PAGE — the image is the star.
+  Front matter used: title, date, medium, dimensions, image, image_full, alt, image_width/height,
+                     process_images, tags, related, description
+{%- endcomment -%}
+{%- assign art_fullfile = page.image_full | default: page.image -%}
+{%- capture art_full %}{% include img-url.html file=art_fullfile item=page %}{% endcapture -%}
+{%- capture art_caption %}{{ page.title }}{% if page.medium and page.medium != "" %} — {{ page.medium }}{% endif %}, {{ page.date | date: site.date_month }}{% endcapture -%}
+
+<article class="artwork sec-art">
+  <header class="artwork__head wrap">
+    <p class="eyebrow"><a href="{{ '/art/' | relative_url }}">{% include icon.html name="arrow-left" %} Art</a></p>
+    <h1 class="artwork__title">{{ page.title }}</h1>
+    <dl class="artwork__meta">
+      {%- if page.medium and page.medium != "" %}<div><dt>Medium</dt><dd>{{ page.medium }}</dd></div>{% endif %}
+      <div><dt>Date</dt><dd><time datetime="{{ page.date | date_to_xmlschema }}">{{ page.date | date: site.date_month }}</time></dd></div>
+      {%- if page.dimensions and page.dimensions != "" %}<div><dt>Size</dt><dd>{{ page.dimensions }}</dd></div>{% endif %}
+    </dl>
+  </header>
+
+  {%- if page.image and page.image != "" %}
+  <figure class="artwork__stage">
+    <div class="artwork__frame">
+      <a href="{{ art_full | strip }}" data-lightbox="art" data-caption="{{ art_caption | strip | escape }}" data-alt="{{ page.alt | escape }}" aria-label="View {{ page.title | escape }} full size">
+        {% include img.html file=page.image alt=page.alt class="artwork__img" loading="eager" sizes="(min-width: 1100px) 1000px, 94vw" width=page.image_width height=page.image_height %}
+      </a>
+    </div>
+    <figcaption class="artwork__hint">{% include icon.html name="sparkle" %} click to view full size</figcaption>
+  </figure>
+  {%- endif %}
+
+  {%- assign art_body = content | strip -%}
+  {%- if art_body != "" %}
+  <section class="artwork__about wrap wrap--read" aria-labelledby="about-h">
+    <h2 class="section-label" id="about-h">About the piece</h2>
+    <div class="prose">
+      {% include prefix-links.html html=content %}
+    </div>
+  </section>
+  {%- endif %}
+
+  {%- if page.process_images and page.process_images.size > 0 %}
+  <section class="process wrap" aria-labelledby="process-h">
+    <h2 class="section-label" id="process-h">Process</h2>
+    <ol class="process__list">
+      {%- for step in page.process_images %}
+        {%- assign pr_file = step.file | default: step -%}
+        {%- assign pr_fullfile = step.full | default: pr_file -%}
+        {%- capture pr_full %}{% include img-url.html file=pr_fullfile item=page %}{% endcapture -%}
+        {%- capture pr_cap %}{{ step.label }}{% if step.label and step.caption %} — {% endif %}{{ step.caption }}{% endcapture %}
+      <li class="process__step">
+        <a class="process__img" href="{{ pr_full | strip }}" data-lightbox="process" data-caption="{{ pr_cap | strip | escape }}" data-alt="{{ step.alt | escape }}">
+          {% include img.html file=pr_file item=page alt=step.alt sizes="(min-width: 900px) 30vw, 80vw" %}
+        </a>
+        <p class="process__label"><span class="sticker">{{ step.label | default: forloop.index }}</span>{% if step.caption and step.caption != "" %} {{ step.caption }}{% endif %}</p>
+      </li>
+      {%- endfor %}
+    </ol>
+  </section>
+  {%- endif %}
+
+  {%- if page.tags and page.tags.size > 0 %}
+  <div class="artwork__tags wrap wrap--read">{% include tags.html tags=page.tags %}</div>
+  {%- endif %}
+</article>
+
+{% include prev-next.html items=site.art label="More artwork" %}
+{% include related-content.html %}

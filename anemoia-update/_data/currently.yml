@@ -1,0 +1,7 @@
+# The small "Right now" corner on the homepage.
+# It stays hidden while "items" is empty. Add lines with the CMS, or like this:
+#   items:
+#     - label: Reading
+#       text: a very good book
+updated:
+items: []

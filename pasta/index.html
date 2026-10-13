@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>For You 🌹</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <!-- Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Cormorant+Garamond:wght@400;600;700&family=Special+Elite&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --bg-dark: #0f0f14;
+      --parchment: #f3e6c8;
+      --ink: #2a1f1a;
+      --rose-red: #8b1e2d;
+      --rose-dark: #5a0f1a;
+      --leaf: #1f4d2b;
+      --gold: #c9a24d;
+      --wax: #7a0e1b;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      background: radial-gradient(circle at top, #1b1b25, var(--bg-dark));
+      color: #eee;
+      font-family: 'Cormorant Garamond', serif;
+      overflow: hidden;
+    }
+
+    /* Film grain overlay */
+    .grain {
+      pointer-events: none;
+      position: fixed;
+      inset: 0;
+      background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="120" height="120"><filter id="n"><feTurbulence type="fractalNoise" baseFrequency="0.8" numOctaves="1" stitchTiles="stitch"/></filter><rect width="100%" height="100%" filter="url(%23n)" opacity="0.08"/></svg>');
+      mix-blend-mode: overlay;
+      animation: grainMove 6s steps(10) infinite;
+    }
+    @keyframes grainMove { to { background-position: 120px 120px; } }
+
+    .screen {
+      width: 100vw;
+      height: 100vh;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      text-align: center;
+      padding: 40px;
+    }
+    .screen.active { display: flex; }
+
+    .type {
+      font-size: 2rem;
+      margin: 12px 0;
+      min-height: 2.4rem;
+      font-family: 'Playfair Display', serif;
+    }
+
+    button {
+      margin-top: 30px;
+      padding: 14px 36px;
+      font-size: 1.1rem;
+      font-family: 'Playfair Display', serif;
+      background: transparent;
+      border: 1px solid var(--gold);
+      color: var(--gold);
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+    button:hover { background: var(--gold); color: #111; }
+
+    /* SVG Rose */
+    #roseSVG { width: 300px; height: 300px; margin-top: 40px; }
+    .petal { fill: url(#petalGrad); transform-origin: center; opacity: 0; animation: petalGrow 1s forwards; }
+    @keyframes petalGrow { from { transform: scale(0.2); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+
+    /* Valentine buttons */
+    .choices { display: flex; gap: 40px; margin-top: 40px; }
+    #noBtn { position: relative; }
+
+    /* Final screen */
+    .final h1 { font-size: 3rem; color: var(--gold); }
+    .bouquet { font-size: 4rem; margin: 20px 0; }
+
+    /* Confetti */
+    canvas { position: fixed; top: 0; left: 0; pointer-events: none; }
+
+    /* Wax seal */
+    .seal-wrap { position: relative; width: 320px; height: 420px; display: flex; align-items: center; justify-content: center; }
+    .envelope { width: 320px; height: 220px; background: linear-gradient(#e8d7b0,#d8c08a); border-radius: 8px; box-shadow: 0 20px 40px rgba(0,0,0,.4); }
+    .wax {
+      position: absolute; width: 110px; height: 110px; border-radius: 50%;
+      background: radial-gradient(circle at 30% 30%, #a0182a, var(--wax));
+      box-shadow: inset 0 0 0 6px rgba(0,0,0,.15), 0 10px 25px rgba(0,0,0,.45);
+      display: grid; place-items: center; cursor: pointer; transition: transform .2s ease;
+    }
+    .wax:hover { transform: scale(1.03); }
+    .wax span { color: #f1d08a; font-family: 'Playfair Display', serif; font-weight: 700; font-size: 1.8rem; }
+    .crack {
+      position: absolute; width: 2px; height: 0; background: #2a0a0f; opacity: .8;
+      animation: crack 1s forwards ease-out; display:none;
+    }
+    @keyframes crack { to { height: 120px; } }
+
+    /* Letter */
+    .letter {
+      background: linear-gradient(#f7ecd2, #e7d6ad);
+      color: var(--ink);
+      padding: 60px;
+      max-width: 900px;
+      max-height: 80vh;
+      overflow-y: auto;
+      font-family: 'Special Elite', cursive;
+      box-shadow: 0 0 60px rgba(0,0,0,0.6);
+    }
+
+    .fullscreen { position: fixed; bottom: 20px; right: 20px; font-size: 0.8rem; padding: 8px 14px; opacity: 0.6; }
+  </style>
+</head>
+<body>
+
+<div class="grain"></div>
+<button class="fullscreen" onclick="toggleFull()">⛶ Full screen</button>
+<audio id="bgm" src="https://cdn.pixabay.com/audio/2022/10/25/audio_6e1bb6e7b6.mp3"></audio>
+<canvas id="confetti"></canvas>
+
+<!-- Screen 1 -->
+<div class="screen active" id="screen1">
+  <div id="t1" class="type"></div>
+  <div id="t2" class="type"></div>
+  <div id="t3" class="type"></div>
+<!--
+  <svg id="roseSVG" viewBox="0 0 200 200" style="display:none;">
+    <defs>
+      <radialGradient id="petalGrad" cx="50%" cy="50%" r="50%">
+        <stop offset="0%" stop-color="#b12a3d" />
+        <stop offset="100%" stop-color="#5a0f1a" />
+      </radialGradient>
+    </defs>
+  </svg>
+-->
+  <img id="roseImg" src="rose.png"
+     alt="Rose" 
+     style="width:300px; height:auto; margin-top:40px; display:none;">
+
+  <button id="next1" style="display:none;" onclick="goTo(2)">Keep reading</button>
+</div>
+
+<!-- Screen 2 -->
+<div class="screen" id="screen2">
+  <div id="q1" class="type"></div>
+  <div id="q2" class="type"></div>
+  <div id="q3" class="type"></div>
+  <div id="q4" class="type"></div>
+
+  <div class="choices">
+    <button onclick="goTo(3)">Yes</button>
+    <button id="noBtn">No</button>
+  </div>
+</div>
+
+<!-- Screen 3 -->
+<div class="screen final" id="screen3">
+  <h1>I'm the luckiest person in the world</h1>
+  <div class="bouquet">💐🌹🌸</div>
+  <p>This is for you, baby. Always and forever.</p>
+  <button onclick="goTo(5)">One last thing</button>
+</div>
+
+<!-- Screen 5: Wax seal -->
+<div class="screen" id="screen5">
+  <div class="seal-wrap">
+    <div class="envelope"></div>
+    <div class="wax" id="waxSeal" title="Break the seal">
+      <span>♥</span>
+      <div class="crack" id="crack"></div>
+    </div>
+  </div>
+  <p style="opacity:.7;margin-top:18px;">Break the seal</p>
+</div>
+
+<!-- Screen 4: Letter -->
+<div class="screen" id="screen4">
+  <div class="letter">
+    <h2>My Love,</h2>
+    <p> 
+I can't even begin to tell you how much you mean to me. I've always been good with words but I keep finding myself at a loss for words when it comes to expressing my love for you. 
+I can not stress this enough, You are the most extraordinary woman I've ever met. You are the most kind, empathetic, smart, funny and thoughtful person I've ever come across. You inspire me to become a better version of myself every single day, just so I can be worthy of someone as incredible as you.
+Loving you feels easier than breathing to me. That is by no means my virtue. It is yours. You seem to light up every room that you walk in, in your very unique way. You carry inexplicable magic within you that is visible to everyone else but you. 
+The way you care so deeply about your family, how much you love your mother, the way you miss your family every time you experience something nice, the way you always want the best for everyone around you, the way you constantly strive to make the world a better place. You have been through so much in life, yet you chose to remain soft and kind through it all. 
+I love how absolutely oblivious you are to the fact that you're the most gorgeous woman on planet earth. I love the fact that even being so drop dead gorgeous, you are a million times prettier on the inside. I love your soul, Baby. I love how you see the beauty in things otherwise considered ordinary. You look at a random pavement on the road and take a picture of it in a way that showcases it’s rarity in ways that I couldn’t even imagine. I love how deeply art touches you, how you let it shape your identity. I love the way you think. How you always put yourself in the other person's shoes. I love your softness. I love how your heart aches deeply for a stranger's pain. I love how much you love animals. In ari's words - you know enough to know that birds belong to the heavens and don't deserve to be shot down from their graceful flight. Animals can sense it too, energy doesn’t lie. They feel safe with you.
+
+I love every little thing about you. The way you scrunch your nose when you don't get your way. The way you whine- babyyyyyyy with a pout when something goes wrong. The way you say - "I look like shit"  when I see an ethereal goddess in front of me. The way you hug me tighter in your sleep. Your smile and your laugh deserves a separate segment altogether, Did you know each time I see you smile, I fall in love with you all over again? Every time you smile, I catch myself thinking - I want to spend the rest of my life making her smile like that. I love how much you love me. It might seem selfish, but I never knew I could ever be loved so deeply by someone that weren’t my parents or my brother ( I was gonna say family, but you are a part of my family. You are my wife. The love of my life ). I know sometimes you think your actions won't ever be enough for me, But I promise you, everything you do is more than enough for me. I love you more than there are stars in the sky. I love you more than there are grains of sand in the world.
+
+There is this quote by W.S. Merwin that always reminds me of you. It goes- Through all of youth I was looking for you, without knowing what I was looking for. I never particularly had an idea of what I wanted in my girlfriend if I ever had one. I've always been prepared to spend my life alone so I never prayed to god what kind of partner I wanted. You are the human embodiment of all those prayers that I didn’t know how to make. God knew me better than I knew myself and blessed me with a girl that has everything that I ever could've asked for and way more. 
+
+It feels surreal when I think about how our choices led us to each other. It was pure serendpity that we met. Meeting you was the favourite plot twist of my life. 
+A woman like you, deserve to be cherished and worshipped. I can not believe god has trusted me with the responsibility of someone as magnificent as you. I don’t know if I deserve this gift, but I promise I will never take this blessing for granted. I promise to hold your heart as my responsibility,  to take care of you and to move heaven and earth to make your life easier - untill the day I die
+আমার মনের রাণী - তুমি আমার সুচরিতা, আমার বনলতা, আমার সুপ্তোত্থিতা.. 
+My Catherine, my Elizabeth, my Milena.. 
+The spirit of my existence. The courage of my heart. The peace of my soul.
+My heart longs for you every moment that we are not together. I miss you so much sweetheart.
+</p>
+    <p>Adios Princess</p>
+  </div>
+</div>
+
+<script>
+  const bgm = document.getElementById('bgm'); bgm.volume = 0;
+  function fadeInMusic(){ bgm.play(); let v=0; const i=setInterval(()=>{ v+=0.02; bgm.volume=Math.min(v,.4); if(v>=.4) clearInterval(i); },200);}  
+
+  function typeText(el, text, delay=40){ return new Promise(res=>{ let i=0; const int=setInterval(()=>{ el.textContent+=text[i++]; if(i>=text.length){ clearInterval(int); res(); } },delay); }); }
+
+  async function start(){
+     fadeInMusic(); await typeText(t1,'Hello sweetheart 💘'); 
+     await typeText(t2,'I love you more than words can express'); 
+     await typeText(t3,'Happy Rose Day'); 
+     document.getElementById('roseImg').style.display = 'block';
+
+     setTimeout(()=>next1.style.display='inline-block',2000); 
+    }
+/*
+  function growRose(){
+   const svg=document.getElementById('roseSVG'); svg.style.display='block'; const petals=24; for(let i=0;i<petals;i++){ const angle=i*137.5; const r=2.5*i; const x=100+r*Math.cos(angle*Math.PI/180); const y=100+r*Math.sin(angle*Math.PI/180); const petal=document.createElementNS('http://www.w3.org/2000/svg','ellipse'); petal.setAttribute('cx',x); petal.setAttribute('cy',y); petal.setAttribute('rx',14); petal.setAttribute('ry',22); petal.setAttribute('class','petal'); petal.style.animationDelay=`${i*0.12}s`; svg.appendChild(petal);} 
+   }*/
+
+
+  async function screen2Text(){ await typeText(q1,'You make my ordinary days feel special'); await typeText(q2,'You are my comfort, my peace, my home'); await typeText(q3,'There is a question in my heart I\'ve been wanting to ask you'); await typeText(q4,'Will you be my Valentine?'); }
+
+  function goTo(n){ document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active')); document.getElementById('screen'+n).classList.add('active'); if(n===2) screen2Text(); if(n===3) startConfetti(); }
+
+  noBtn.addEventListener('mouseenter',()=>{ noBtn.style.transform=`translate(${Math.random()*300-150}px, ${Math.random()*300-150}px)`; });
+
+  function toggleFull(){ if(!document.fullscreenElement) document.documentElement.requestFullscreen(); else document.exitFullscreen(); }
+
+  /* Wax seal interaction */
+  const wax=document.getElementById('waxSeal'); const crack=document.getElementById('crack');
+  wax.addEventListener(
+    'click',()=>{ 
+    canvas.style.display = 'none';
+    crack.style.display='block'; 
+    crack.style.animation='crack 1s forwards'; 
+    wax.style.transform='scale(.9)'; setTimeout(()=>goTo(4),900); });
+
+  /* Confetti Physics */
+  const canvas=document.getElementById('confetti'); const ctx=canvas.getContext('2d'); canvas.width=innerWidth; canvas.height=innerHeight;
+  let confetti=[];
+  function startConfetti(){ confetti=Array.from({length:220},()=>({ x:Math.random()*canvas.width, y:Math.random()*canvas.height-canvas.height, r:Math.random()*6+4, vx:Math.random()*4-2, vy:Math.random()*5+2 })); animateConfetti(); }
+  function animateConfetti(){ ctx.clearRect(0,0,canvas.width,canvas.height); confetti.forEach(p=>{ ctx.beginPath(); ctx.arc(p.x,p.y,p.r,0,Math.PI*2); ctx.fillStyle=['#c9a24d','#8b1e2d','#ffffff'][Math.floor(Math.random()*3)]; ctx.fill(); p.x+=p.vx; p.y+=p.vy; if(p.y>canvas.height) p.y=-10; }); requestAnimationFrame(animateConfetti); }
+
+  start();
+</script>
+</body>
+</html>
